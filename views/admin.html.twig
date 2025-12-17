@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration des utilisateurs - CookBook</title>
+    <link rel="stylesheet" href="/CookBook/public/css/style.css">
+</head>
+<body>
+<header>
+    <div>
+        <strong>CookBook - Admin</strong>
+    </div>
+    <nav>
+        <a href="/CookBook/">Accueil</a>
+        <a href="/CookBook/logout">Déconnexion</a>
+        {% if currentUser %}
+            <span class="user-badge">{{ currentUser }}</span>
+        {% endif %}
+    </nav>
+</header>
+
+<main class="recipes-my">
+    <div class="top-actions">
+        <h1>Gestion des utilisateurs</h1>
+    </div>
+
+    <section style="margin-bottom: 1.5rem;">
+        <h2>Statistiques</h2>
+        <ul>
+            <li>Total utilisateurs : {{ totalUsers }}</li>
+            <li>Administrateurs : {{ totalAdmins }}</li>
+            <li>Comptes actifs : {{ totalActive }}</li>
+            <li>Comptes désactivés : {{ totalInactive }}</li>
+            <li>Recettes totales : {{ recipeCount }}</li>
+        </ul>
+        <p>
+            <a href="/CookBook/admin/recipes">Voir toutes les recettes</a>
+        </p>
+    </section>
+
+    {% if users is defined and users|length > 0 %}
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Rôle</th>
+                <th>Actif</th>
+                <th>Créé le</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.name|default('-') }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.role }}</td>
+                    <td>{{ user.active is defined and user.active == 1 ? 'Oui' : 'Non' }}</td>
+                    <td>{{ user.created_at|date('d/m/Y H:i') }}</td>
+                    <td class="actions">
+                        <a href="/CookBook/admin/users/{{ user.id }}/edit">Modifier</a>
+                        <form method="post"
+                              action="/CookBook/admin/users/{{ user.id }}/delete"
+                              style="display:inline"
+                              onsubmit="return confirm('Supprimer cet utilisateur ?');">
+                            <button type="submit" class="btn-link">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Aucun utilisateur trouvé.</p>
+    {% endif %}
+</main>
+</body>
+</html>

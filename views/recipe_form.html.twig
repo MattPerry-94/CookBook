@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if mode == 'edit' %}Modifier{% else %}Créer{% endif %} une recette - CookBook</title>
+    <link rel="stylesheet" href="/CookBook/public/css/style.css">
+</head>
+<body>
+<header>
+    <div>
+        <strong>CookBook</strong>
+    </div>
+    <nav>
+        <a href="/CookBook/">Accueil</a>
+        {% if currentUser %}
+            <a href="/CookBook/my-recipes">Mes recettes</a>
+            <a href="/CookBook/logout">Déconnexion</a>
+            <span class="user-badge">{{ currentUser }}</span>
+        {% endif %}
+        {% if currentUser %}
+            <span class="user-badge">{{ currentUser }}</span>
+        {% endif %}
+    </nav>
+</header>
+
+<main class="recipe-form">
+    <h1>{% if mode == 'edit' %}Modifier{% else %}Créer{% endif %} une recette</h1>
+
+    {% if error is defined %}
+        <div class="error">{{ error }}</div>
+    {% endif %}
+
+    {% if mode == 'edit' %}
+        <form method="post" enctype="multipart/form-data">
+    {% else %}
+        <form method="post" action="/CookBook/recipes/create" enctype="multipart/form-data">
+    {% endif %}
+        <div>
+            <label for="title">Titre de la recette *</label>
+            <input type="text" id="title" name="title"
+                   value="{{ (recipe.title is defined ? recipe.title : (old.title|default(''))) }}"
+                   required>
+        </div>
+
+        <div>
+            <label for="category_id">Catégorie</label>
+            <select id="category_id" name="category_id">
+                <option value="">-- Aucune --</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}"
+                        {% if recipe.category_id is defined and recipe.category_id == category.id %}
+                            selected
+                        {% endif %}>
+                        {{ category.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>
+            <label for="description">Description courte</label>
+            <textarea id="description" name="description">{{ recipe.description|default('') }}</textarea>
+        </div>
+
+        <div>
+            <label for="ingredients">Ingrédients (un par ligne) *</label>
+            <textarea id="ingredients" name="ingredients" required>{{ recipe.ingredients|default('') }}</textarea>
+        </div>
+
+        <div>
+            <label for="steps">Étapes de la recette *</label>
+            <textarea id="steps" name="steps" required>{{ recipe.steps|default('') }}</textarea>
+        </div>
+
+        <div>
+            <label for="image">Photo de la recette</label>
+            <input type="file" id="image" name="image" accept="image/*">
+            {% if recipe.image_path is defined and recipe.image_path %}
+                <p>Image actuelle :</p>
+                <img src="{{ recipe.image_path }}" alt="Image actuelle" style="max-width: 200px;">
+            {% endif %}
+        </div>
+
+        <div class="actions">
+            <button type="submit">
+                {% if mode == 'edit' %}Enregistrer{% else %}Créer la recette{% endif %}
+            </button>
+        </div>
+    </form>
+</main>
+</body>
+</html>

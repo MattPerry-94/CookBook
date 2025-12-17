@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes recettes - CookBook</title>
+    <link rel="stylesheet" href="/CookBook/public/css/style.css">
+</head>
+<body>
+<header>
+    <div>
+        <strong>CookBook</strong>
+    </div>
+    <nav>
+        <a href="/CookBook/">Accueil</a>
+        {% if currentUser %}
+            <a href="/CookBook/recipes/create">Créer une recette</a>
+            <a href="/CookBook/logout">Déconnexion</a>
+        {% endif %}
+        {% if currentUser %}
+            <span class="user-badge">{{ currentUser }}</span>
+        {% endif %}
+    </nav>
+</header>
+
+<main class="recipes-my">
+    <div class="top-actions">
+        <h1>Mes recettes</h1>
+        <a href="/CookBook/recipes/create">+ Nouvelle recette</a>
+    </div>
+
+    {% if recipes is defined and recipes|length > 0 %}
+        <table>
+            <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Catégorie</th>
+                <th>Créée le</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for recipe in recipes %}
+                <tr>
+                    <td>{{ recipe.title }}</td>
+                    <td>{{ recipe.category_name|default('-') }}</td>
+                    <td>{{ recipe.created_at|date('d/m/Y H:i') }}</td>
+                    <td class="actions">
+                        <a href="/CookBook/recipes/{{ recipe.id }}">Voir</a>
+                        <a href="/CookBook/recipes/{{ recipe.id }}/edit">Modifier</a>
+                        <form method="post" action="/CookBook/recipes/{{ recipe.id }}/delete" style="display:inline" onsubmit="return confirm('Supprimer cette recette ?');">
+                            <button type="submit" class="btn-link">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Vous n'avez pas encore créé de recette.</p>
+    {% endif %}
+</main>
+</body>
+</html>

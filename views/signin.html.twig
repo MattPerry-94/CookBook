@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - CookBook</title>
+    <link rel="stylesheet" href="/CookBook/public/css/style.css">
+</head>
+<body>
+<div class="auth-page">
+    <div class="auth-card">
+        <h1>Connexion</h1>
+        <p class="auth-subtitle">Connectez-vous pour gérer vos recettes.</p>
+
+        <form method="POST" action="/CookBook/signin">
+            <div>
+                <label for="mail">Votre email</label>
+                <input placeholder="nom@exemple.com" id="mail" name="mail" type="text" required>
+            </div>
+
+            <div>
+                <label for="pwd">Votre mot de passe</label>
+                <input placeholder="mot de passe" id="pwd" name="pwd" type="password" required>
+            </div>
+
+            <div class="auth-actions">
+                <button type="submit">Se connecter</button>
+                <p class="auth-link">
+                    Pas encore de compte ?
+                    <a href="/CookBook/signup">Inscrivez-vous</a>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

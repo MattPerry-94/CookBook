@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des recettes - CookBook</title>
+    <link rel="stylesheet" href="/CookBook/public/css/style.css">
+</head>
+<body>
+<header>
+    <div>
+        <strong>CookBook - Admin</strong>
+    </div>
+    <nav>
+        <a href="/CookBook/admin">Utilisateurs</a>
+        <a href="/CookBook/">Accueil</a>
+        <a href="/CookBook/logout">Déconnexion</a>
+        {% if currentUser %}
+            <span class="user-badge">{{ currentUser }}</span>
+        {% endif %}
+    </nav>
+</header>
+
+<main class="recipes-my">
+    <div class="top-actions">
+        <h1>Gestion des recettes</h1>
+    </div>
+
+    {% if recipes is defined and recipes|length > 0 %}
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Titre</th>
+                <th>Auteur</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for recipe in recipes %}
+                <tr>
+                    <td>{{ recipe.id }}</td>
+                    <td>{{ recipe.title }}</td>
+                    <td>
+                        {{ recipe.author_name|default('') }}<br>
+                        <small>{{ recipe.author_email }}</small>
+                    </td>
+                    <td>{{ recipe.created_at|date('d/m/Y H:i') }}</td>
+                    <td class="actions">
+                        <a href="/CookBook/recipes/{{ recipe.id }}">Voir</a>
+                        <form method="post"
+                              action="/CookBook/admin/recipes/{{ recipe.id }}/delete"
+                              style="display:inline"
+                              onsubmit="return confirm('Supprimer cette recette ?');">
+                            <button type="submit" class="btn-link">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Aucune recette trouvée.</p>
+    {% endif %}
+</main>
+</body>
+</html>

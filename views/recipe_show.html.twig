@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ recipe.title }} - CookBook</title>
+    <link rel="stylesheet" href="/CookBook/public/css/style.css">
+</head>
+<body>
+<header>
+    <div>
+        <strong>CookBook</strong>
+    </div>
+    <nav>
+        <a href="/CookBook/">Accueil</a>
+        {% if currentUser %}
+            <a href="/CookBook/my-recipes">Mes recettes</a>
+            <a href="/CookBook/recipes/create">Créer une recette</a>
+            <a href="/CookBook/logout">Déconnexion</a>
+            <span class="user-badge">{{ currentUser }}</span>
+        {% else %}
+            <a href="/CookBook/signin">Connexion</a>
+        {% endif %}
+    </nav>
+</header>
+
+<main class="recipe-show">
+    {% if recipe.image_path %}
+        <img src="{{ recipe.image_path }}" alt="Photo de {{ recipe.title }}" class="hero-img">
+    {% endif %}
+    <div class="content">
+        <h1>{{ recipe.title }}</h1>
+        <div class="meta">
+            {% if recipe.category_name %}
+                <span>{{ recipe.category_name }} • </span>
+            {% endif %}
+            {% if recipe.author_name %}
+                <span>par {{ recipe.author_name }}</span>
+            {% endif %}
+        </div>
+
+        {% if recipe.description %}
+            <p>{{ recipe.description }}</p>
+        {% endif %}
+
+        <h2>Ingrédients</h2>
+        <pre>{{ recipe.ingredients }}</pre>
+
+        <h2>Étapes</h2>
+        <pre>{{ recipe.steps }}</pre>
+    </div>
+</main>
+</body>
+</html>

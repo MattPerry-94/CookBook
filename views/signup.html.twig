@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription - CookBook</title>
+    <link rel="stylesheet" href="/CookBook/public/css/style.css">
+</head>
+<body>
+<div class="auth-page">
+    <div class="auth-card">
+        <h1>Inscription</h1>
+        <p class="auth-subtitle">Créez votre compte pour gérer vos recettes.</p>
+
+        <form method="POST" action="/CookBook/signup">
+            <div>
+                <label for="email">Votre email</label>
+                <input placeholder="nom@fournisseur.ext" type="email" id="email" name="email" required />
+            </div>
+
+            <div>
+                <label for="password">Votre mot de passe</label>
+                <input placeholder="votre mot de passe" type="password" id="password" name="password" required />
+            </div>
+
+            <div>
+                <label for="Check_password">Confirmation du mot de passe</label>
+                <input  placeholder="vérification du mot de passe" type="password" id="Check_password" name="Check_password" required />
+            </div>
+
+            <div class="auth-actions">
+                <button type="submit">S'inscrire</button>
+                <p class="auth-link">
+                    Vous avez déjà un compte ?
+                    <a href="/CookBook/signin">Connectez-vous</a>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

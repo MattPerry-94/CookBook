@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CookBook - Recettes</title>
+    <link rel="stylesheet" href="/CookBook/public/css/style.css">
+</head>
+<body>
+<header>
+    <div>
+        <strong>CookBook</strong>
+    </div>
+    <nav>
+        <a href="/CookBook/">Accueil</a>
+        {% if currentUser %}
+            <a href="/CookBook/my-recipes">Mes recettes</a>
+            <a href="/CookBook/recipes/create">Créer une recette</a>
+            {% if isAdmin %}
+                <a href="/CookBook/admin">Administration</a>
+            {% endif %}
+            <a href="/CookBook/logout">Déconnexion</a>
+            <span class="user-badge">{{ currentUser }}</span>
+        {% else %}
+            <a href="/CookBook/signin">Connexion</a>
+            <a href="/CookBook/signup">Inscription</a>
+        {% endif %}
+    </nav>
+</header>
+<main>
+    <h1>Les dernières recettes</h1>
+
+    <form method="get" class="search-bar">
+        <input type="text" name="q" placeholder="Rechercher par titre ou ingrédient" value="{{ query|default('') }}">
+        <button type="submit">Rechercher</button>
+    </form>
+
+    {% if recipes is defined and recipes|length > 0 %}
+        <div class="recipes-grid">
+            {% for recipe in recipes %}
+                <article class="card">
+                    {% if recipe.image_path %}
+                        <img src="{{ recipe.image_path }}" alt="Photo de {{ recipe.title }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <h2 class="card-title">{{ recipe.title }}</h2>
+                        <div class="card-meta">
+                            {% if recipe.category_name %}
+                                <span>{{ recipe.category_name }} • </span>
+                            {% endif %}
+                            {% if recipe.author_name %}
+                                <span>par {{ recipe.author_name }}</span>
+                            {% endif %}
+                        </div>
+                        <p>{{ recipe.description|default('')|slice(0, 120) }}{% if recipe.description and recipe.description|length > 120 %}...{% endif %}</p>
+                        <a href="/CookBook/recipes/{{ recipe.id }}">Voir la recette</a>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty">
+            Aucune recette pour le moment. Soyez le premier à en créer une !
+        </div>
+    {% endif %}
+</main>
+</body>
+</html>

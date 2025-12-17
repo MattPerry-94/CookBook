@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier un utilisateur - CookBook</title>
+    <link rel="stylesheet" href="/CookBook/public/css/style.css">
+</head>
+<body>
+<header>
+    <div>
+        <strong>CookBook - Admin</strong>
+    </div>
+    <nav>
+        <a href="/CookBook/admin">Retour à la liste</a>
+        <a href="/CookBook/logout">Déconnexion</a>
+    </nav>
+</header>
+
+<main class="recipe-form">
+    <h1>Modifier l'utilisateur #{{ user.id }}</h1>
+
+    {% if error is defined %}
+        <div class="error">{{ error }}</div>
+    {% endif %}
+
+    <form method="post">
+        <div>
+            <label for="name">Nom</label>
+            <input type="text" id="name" name="name" value="{{ user.name|default('') }}">
+        </div>
+
+        <div>
+            <label for="email">Email *</label>
+            <input type="text" id="email" name="email" value="{{ user.email }}" required>
+        </div>
+
+        <div>
+            <label for="role">Rôle *</label>
+            <select id="role" name="role" required>
+                <option value="user" {% if user.role == 'user' %}selected{% endif %}>Utilisateur</option>
+                <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Administrateur</option>
+            </select>
+        </div>
+
+        <div>
+            <label>
+                <input type="checkbox" name="active" value="1" {% if user.active is defined and user.active == 1 %}checked{% endif %}>
+                Compte actif
+            </label>
+        </div>
+
+        <div class="actions">
+            <button type="submit">Enregistrer</button>
+        </div>
+    </form>
+</main>
+</body>
+</html>
