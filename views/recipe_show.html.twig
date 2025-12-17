@@ -48,6 +48,48 @@
 
         <h2>Étapes</h2>
         <pre>{{ recipe.steps }}</pre>
+
+        <hr style="margin: 2rem 0; border: none; border-top: 1px solid #eee;">
+
+        <section class="comments">
+            <h2>Commentaires ({{ comments|length }})</h2>
+
+            {% if currentUser %}
+                <form action="/CookBook/recipes/{{ recipe.id }}/comment" method="post" class="comment-form">
+                    <div style="margin-bottom: 1rem;">
+                        <textarea name="content" placeholder="Ajouter un commentaire..." required style="width: 100%; min-height: 80px; padding: 0.5rem;"></textarea>
+                    </div>
+                    <button type="submit">Publier</button>
+                </form>
+            {% else %}
+                <p>
+                    <a href="/CookBook/signin">Connectez-vous</a> pour ajouter un commentaire.
+                </p>
+            {% endif %}
+
+            <div class="comments-list" style="margin-top: 2rem;">
+                {% for comment in comments %}
+                    <div class="comment" style="background: #f9f9f9; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <div class="comment-header" style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.9rem; color: #666;">
+                            <div>
+                                <strong>{{ comment.author_name }}</strong>
+                                <span> • {{ comment.created_at|date('d/m/Y H:i') }}</span>
+                            </div>
+                            {% if isAdmin %}
+                                <form action="/CookBook/admin/comments/{{ comment.id }}/delete" method="post" style="display:inline;" onsubmit="return confirm('Supprimer ce commentaire ?');">
+                                    <button type="submit" style="background: none; border: none; color: red; cursor: pointer; padding: 0; font-size: 0.9rem;">Supprimer</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                        <div class="comment-body">
+                            {{ comment.content|nl2br }}
+                        </div>
+                    </div>
+                {% else %}
+                    <p style="color: #666;">Aucun commentaire pour l'instant.</p>
+                {% endfor %}
+            </div>
+        </section>
     </div>
 </main>
 </body>

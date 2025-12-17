@@ -16,16 +16,20 @@ final class AuthController extends Controller {
         parent::__construct($pdo, $twig);
     }
 
-    public function register($email,$pwd){
+    public function register($email, $pwd, $username = null){
 
         $UserModel = new UserModel($this->pdo,"users");
         $hash = password_hash($pwd, PASSWORD_DEFAULT);
         
-        $row = $UserModel->addUser($email,$hash);
-        if($row !== 0){
+        $newUserId = $UserModel->addUser($email, $hash, $username);
+        
+        if($newUserId > 0){
             session_regenerate_id(true);
-            $_SESSION["user"] = $email;
-            $_SESSION["role"] = 'user';
+            // On stocke le pseudo s'il existe, sinon l'email
+            $_SESSION["user"]    = !empty($username) ? $username : $email;
+            $_SESSION["id_user"] = $newUserId; // Ajout de l'ID utilisateur en session
+            $_SESSION["role"]    = 'user';
+            
             // Après inscription, l'utilisateur reste connecté et va sur la page d'accueil
             header("location: /CookBook/");
         }
@@ -48,11 +52,15 @@ final class AuthController extends Controller {
     public function login($mail, $pwd){
         $UserModel = new UserModel($this->pdo, "users");
         $result = $UserModel->login($mail, $pwd);
-        if($result ===false){
-            header("Location: /CookBook/signin");
+        if($result === false){
+            $this->render("signin.html.twig", [
+                'error' => 'Mot de passe incorrect ou utilisateur inexistant.',
+                'old_email' => $mail
+            ]);
         }
         else{
-            $_SESSION["user"] = $result["email"];
+            // On stocke le pseudo (name) s'il existe, sinon l'email
+            $_SESSION["user"] = !empty($result["name"]) ? $result["name"] : $result["email"];
             $_SESSION["id_user"] = $result["id"];
             $_SESSION["role"] = $result["role"] ?? 'user';
 

@@ -55,12 +55,14 @@ $router->map('GET', '/signup', function () use ($pdo,$twig) {
 $router->map('POST', '/signup', function () use ($pdo,$twig) {
     $email = $_POST["email"];
     $pwd = $_POST["password"];
+    $username = $_POST["username"] ?? null;
+
     if(!empty($email) && isset($email) &&
        !empty($pwd) && isset($pwd) 
     )
     {
         $AuthController = new AuthController($pdo,$twig);
-        $AuthController->register($email,$pwd);
+        $AuthController->register($email, $pwd, $username);
     }
 });
 
@@ -160,6 +162,19 @@ $router->map('POST', '/recipes/[i:id]/delete', function ($id) use ($pdo, $twig) 
     $recipeController = new RecipeController($pdo, $twig);
     $recipeController->delete($id);
 });
+
+$router->map('POST', '/recipes/[i:id]/comment', function ($id) use ($pdo, $twig) {
+    AuthMiddleware::authSession();
+    $recipeController = new RecipeController($pdo, $twig);
+    $recipeController->addComment($id);
+});
+
+$router->map('POST', '/admin/comments/[i:id]/delete', function ($id) use ($pdo, $twig) {
+    AuthMiddleware::authSession();
+    $AdminController = new AdminController($pdo, $twig);
+    $AdminController->deleteComment($id);
+});
+
 $match = $router->match();
 
 

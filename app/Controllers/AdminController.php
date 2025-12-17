@@ -4,6 +4,7 @@ use Twig\Environment;
 use App\Middlewares\JwtService;
 use App\Models\UserModel;
 use App\Models\RecipeModel;
+use App\Models\CommentModel;
 
 use PDO;
 
@@ -94,7 +95,7 @@ final class AdminController extends Controller{
         $user      = $userModel->findById($id);
 
         if (!$user) {
-            header('Location: /application/admin');
+            header('Location: /CookBook/admin');
             return;
         }
 
@@ -112,7 +113,7 @@ final class AdminController extends Controller{
         }
 
         $userModel->updateUser($id, $email, $name !== '' ? $name : null, $role, $active);
-        header('Location: /application/admin');
+        header('Location: /CookBook/admin');
     }
 
     public function delete(int $id): void
@@ -122,12 +123,12 @@ final class AdminController extends Controller{
 
         // On évite de supprimer son propre compte admin
         if ($id === (int) $_SESSION['id_user']) {
-            header('Location: /application/admin');
+            header('Location: /CookBook/admin');
             return;
         }
 
         $userModel->deleteById($id);
-        header('Location: /application/admin');
+        header('Location: /CookBook/admin');
     }
 
     // Liste de toutes les recettes (modération)
@@ -148,7 +149,24 @@ final class AdminController extends Controller{
         $this->ensureAdmin();
         $recipeModel = new RecipeModel($this->pdo);
         $recipeModel->deleteById($id);
-        header('Location: /application/admin/recipes');
+        header('Location: /CookBook/admin/recipes');
+    }
+
+    // Suppression d'un commentaire par un admin
+    public function deleteComment(int $id): void
+    {
+        $this->ensureAdmin();
+        $commentModel = new CommentModel($this->pdo);
+        
+        // On pourrait récupérer le recipe_id avant de supprimer pour rediriger vers la recette
+        // Mais pour faire simple, on va utiliser HTTP_REFERER ou rediriger vers l'accueil
+        $commentModel->delete($id);
+        
+        if (!empty($_SERVER['HTTP_REFERER'])) {
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+        } else {
+            header('Location: /CookBook/');
+        }
     }
 
 }

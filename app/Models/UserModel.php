@@ -12,11 +12,20 @@ class UserModel extends Model {
         parent::__construct($db, 'users');
     }
 
-    public function addUser(string $mail,string $pwd){
-        $request = "INSERT INTO {$this->table} (email,pwd,active) VALUES(:email,:pwd,1)";
+    public function addUser(string $mail, string $pwd, ?string $username = null){
+        $request = "INSERT INTO {$this->table} (email, pwd, name, active) VALUES(:email, :pwd, :name, 1)";
         $stmt = $this->db->prepare($request);
-        $stmt->execute(["email"=>$mail,"pwd"=>$pwd]);
-        return $stmt->rowCount();
+        $stmt->execute([
+            "email" => $mail,
+            "pwd"   => $pwd,
+            "name"  => $username
+        ]);
+        
+        // Retourne l'ID du nouvel utilisateur ou 0 si échec
+        if ($stmt->rowCount() > 0) {
+            return (int) $this->db->lastInsertId();
+        }
+        return 0;
     }
 
     public function login(string $email, string $password): array|false

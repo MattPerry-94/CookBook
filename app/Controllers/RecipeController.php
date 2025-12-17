@@ -3,6 +3,7 @@ namespace App\Controllers;
 
 use App\Models\RecipeModel;
 use App\Models\CategoryModel;
+use App\Models\CommentModel;
 use PDO;
 use Twig\Environment;
 
@@ -10,12 +11,14 @@ class RecipeController extends Controller
 {
     private RecipeModel $recipeModel;
     private CategoryModel $categoryModel;
+    private CommentModel $commentModel;
 
     public function __construct(PDO $pdo, Environment $twig)
     {
         parent::__construct($pdo, $twig);
         $this->recipeModel   = new RecipeModel($pdo);
         $this->categoryModel = new CategoryModel($pdo);
+        $this->commentModel  = new CommentModel($pdo);
     }
 
     // Liste publique des recettes (page d'accueil)
@@ -27,6 +30,12 @@ class RecipeController extends Controller
         } else {
             $recipes = $this->recipeModel->findPublicList();
         }
+
+        // Récupérer les commentaires pour chaque recette
+        foreach ($recipes as &$recipe) {
+            $recipe['comments'] = $this->commentModel->findAllByRecipe($recipe['id']);
+        }
+        unset($recipe);
 
         $this->render('home.html.twig', [
             'recipes' => $recipes,
@@ -52,9 +61,34 @@ class RecipeController extends Controller
             return;
         }
 
+        $comments = $this->commentModel->findAllByRecipe($id);
+
         $this->render('recipe_show.html.twig', [
-            'recipe' => $recipe,
+            'recipe'   => $recipe,
+            'comments' => $comments,
         ]);
+    }
+
+    public function addComment(int $id): void
+    {
+        if (empty($_SESSION['id_user'])) {
+            header('Location: /CookBook/signin');
+            exit;
+        }
+
+        $content = trim($_POST['content'] ?? '');
+        if ($content === '') {
+            header('Location: /CookBook/recipes/' . $id);
+            exit;
+        }
+
+        $this->commentModel->create([
+            'recipe_id' => $id,
+            'user_id'   => (int) $_SESSION['id_user'],
+            'content'   => $content,
+        ]);
+
+        header('Location: /CookBook/recipes/' . $id);
     }
 
     // Liste des recettes de l'utilisateur connecté
@@ -199,7 +233,7 @@ class RecipeController extends Controller
         ];
 
         $this->recipeModel->updateForUser($id, $userId, $data);
-        header('Location: /application/my-recipes');
+        header('Location: /CookBook/my-recipes');
     }
 
     // Suppression
@@ -257,8 +291,8 @@ class RecipeController extends Controller
             return $currentPath;
         }
 
-        // Chemin accessible depuis le navigateur (en supposant /application/public comme racine)
-        return '/application/public/uploads/' . $fileName;
+        // Chemin accessible depuis le navigateur (en supposant /CookBook/public comme racine)
+        return '/CookBook/public/uploads/' . $fileName;
     }
 }
 

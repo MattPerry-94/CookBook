@@ -12,10 +12,14 @@
         <h1>Connexion</h1>
         <p class="auth-subtitle">Connectez-vous pour gérer vos recettes.</p>
 
+        {% if error is defined %}
+            <div class="error" style="color: red; margin-bottom: 1rem;">{{ error }}</div>
+        {% endif %}
+
         <form method="POST" action="/CookBook/signin">
             <div>
                 <label for="mail">Votre email</label>
-                <input placeholder="nom@exemple.com" id="mail" name="mail" type="text" required>
+                <input placeholder="nom@exemple.com" id="mail" name="mail" type="text" value="{{ old_email|default('') }}" required>
             </div>
 
             <div>

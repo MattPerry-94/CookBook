@@ -53,6 +53,24 @@
                             {% endif %}
                         </div>
                         <p>{{ recipe.description|default('')|slice(0, 120) }}{% if recipe.description and recipe.description|length > 120 %}...{% endif %}</p>
+                        
+                        {% if recipe.comments|length > 0 %}
+                            <div class="comments-preview" style="margin-top: 1rem; padding-top: 0.5rem; border-top: 1px solid #eee; font-size: 0.9em;">
+                                <strong>Derniers commentaires :</strong>
+                                <ul style="list-style: none; padding: 0; margin: 0.5rem 0 0;">
+                                    {% for comment in recipe.comments|slice(0, 2) %}
+                                        <li style="margin-bottom: 0.5rem;">
+                                            <span style="font-weight: bold; color: #666;">{{ comment.author_name }}:</span>
+                                            {{ comment.content|slice(0, 50) }}{% if comment.content|length > 50 %}...{% endif %}
+                                        </li>
+                                    {% endfor %}
+                                    {% if recipe.comments|length > 2 %}
+                                        <li><em style="color: #888;">+ {{ recipe.comments|length - 2 }} autres commentaires</em></li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        {% endif %}
+
                         <a href="/CookBook/recipes/{{ recipe.id }}">Voir la recette</a>
                     </div>
                 </article>
