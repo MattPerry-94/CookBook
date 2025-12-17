@@ -10,7 +10,9 @@ use App\Controllers\AuthController;
 use App\Controllers\SiteController;
 use App\Controllers\AdminController;
 use App\Controllers\RecipeController;
+use App\Controllers\MessageController;
 use App\Middlewares\AuthMiddleware;
+use App\Models\MessageModel;
 use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
 
@@ -30,11 +32,20 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
 
+$pdo = Database::getInstance();
+
+// Compter les messages non lus si l'utilisateur est connecté
+$unreadCount = 0;
+if (!empty($_SESSION['id_user'])) {
+    $messageModel = new MessageModel($pdo);
+    $unreadCount = $messageModel->countUnread((int) $_SESSION['id_user']);
+}
+
 // Variable globale Twig pour l'utilisateur courant
 $twig->addGlobal('currentUser', $_SESSION['user'] ?? null);
+$twig->addGlobal('currentUserId', $_SESSION['id_user'] ?? null); // Ajout ID utilisateur
 $twig->addGlobal('isAdmin', (!empty($_SESSION['role']) && $_SESSION['role'] === 'admin'));
-
-$pdo = Database::getInstance();
+$twig->addGlobal('unreadMessagesCount', $unreadCount);
 
 $router = new AltoRouter();
 $router->setBasePath("/CookBook");
@@ -173,6 +184,31 @@ $router->map('POST', '/admin/comments/[i:id]/delete', function ($id) use ($pdo, 
     AuthMiddleware::authSession();
     $AdminController = new AdminController($pdo, $twig);
     $AdminController->deleteComment($id);
+});
+
+// Routes Messagerie
+$router->map('GET', '/messages', function () use ($pdo, $twig) {
+    AuthMiddleware::authSession();
+    $messageController = new MessageController($pdo, $twig);
+    $messageController->index();
+});
+
+$router->map('GET', '/messages/new', function () use ($pdo, $twig) {
+    AuthMiddleware::authSession();
+    $messageController = new MessageController($pdo, $twig);
+    $messageController->newConversation();
+});
+
+$router->map('GET', '/messages/[i:id]', function ($id) use ($pdo, $twig) {
+    AuthMiddleware::authSession();
+    $messageController = new MessageController($pdo, $twig);
+    $messageController->show($id);
+});
+
+$router->map('POST', '/messages/[i:id]', function ($id) use ($pdo, $twig) {
+    AuthMiddleware::authSession();
+    $messageController = new MessageController($pdo, $twig);
+    $messageController->send($id);
 });
 
 $match = $router->match();

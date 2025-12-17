@@ -15,6 +15,12 @@
         <a href="/CookBook/">Accueil</a>
         {% if currentUser %}
             <a href="/CookBook/my-recipes">Mes recettes</a>
+            <a href="/CookBook/messages">
+                Messages
+                {% if unreadMessagesCount > 0 %}
+                    <span class="badge" style="background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.8rem; vertical-align: top;">{{ unreadMessagesCount }}</span>
+                {% endif %}
+            </a>
             <a href="/CookBook/recipes/create">Créer une recette</a>
             <a href="/CookBook/logout">Déconnexion</a>
             <span class="user-badge">{{ currentUser }}</span>

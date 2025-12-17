@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes messages - CookBook</title>
+    <link rel="stylesheet" href="/CookBook/public/css/style.css">
+</head>
+<body>
+<header>
+    <div>
+        <strong>CookBook</strong>
+    </div>
+    <nav>
+        <a href="/CookBook/">Accueil</a>
+        {% if currentUser %}
+            <a href="/CookBook/my-recipes">Mes recettes</a>
+            <a href="/CookBook/messages" class="active">
+                Messages
+                {% if unreadMessagesCount > 0 %}
+                    <span class="badge" style="background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.8rem; vertical-align: top;">{{ unreadMessagesCount }}</span>
+                {% endif %}
+            </a>
+            <a href="/CookBook/recipes/create">Créer une recette</a>
+            <a href="/CookBook/logout">Déconnexion</a>
+            <span class="user-badge">{{ currentUser }}</span>
+        {% else %}
+            <a href="/CookBook/signin">Connexion</a>
+        {% endif %}
+    </nav>
+</header>
+
+<main class="messages-page">
+    <div class="top-actions" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h1>Mes conversations</h1>
+        <a href="/CookBook/messages/new" style="background: #ff7043; color: white; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none;">+ Nouveau message</a>
+    </div>
+
+    {% if conversations is defined and conversations|length > 0 %}
+        <div class="conversations-list">
+            {% for conv in conversations %}
+                <a href="/CookBook/messages/{{ conv.contact_id }}" class="card conversation-item" style="text-decoration: none; color: inherit; display: block; padding: 1rem; margin-bottom: 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0;">{{ conv.contact_name|default(conv.contact_email) }}</h3>
+                        <small style="color: #666;">{{ conv.created_at|date('d/m/Y H:i') }}</small>
+                    </div>
+                    <p style="margin: 0.5rem 0 0; color: #555; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        {% if conv.sender_id == currentUserId %}
+                            <em>Vous :</em>
+                        {% endif %}
+                        {{ conv.content }}
+                    </p>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Vous n'avez pas encore de messages.</p>
+    {% endif %}
+</main>
+</body>
+</html>

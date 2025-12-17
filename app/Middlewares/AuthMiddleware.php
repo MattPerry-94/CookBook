@@ -3,6 +3,8 @@
 
 namespace App\middlewares;
 
+use App\Middlewares\JwtService;
+
 final class AuthMiddleware{
 
     public static function authApi(): void
@@ -19,7 +21,7 @@ final class AuthMiddleware{
         $token = substr($auth, 7);
 
         try {
-            $payload = JwtSeervice::verify($token);
+            $payload = JwtService::verify($token);
             $_REQUEST["auth_user"] = $payload;
     
         } catch (\Exception $e) {
