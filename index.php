@@ -211,6 +211,12 @@ $router->map('POST', '/messages/[i:id]', function ($id) use ($pdo, $twig) {
     $messageController->send($id);
 });
 
+$router->map('POST', '/messages/[i:id]/delete', function ($id) use ($pdo, $twig) {
+    AuthMiddleware::authSession();
+    $messageController = new MessageController($pdo, $twig);
+    $messageController->delete($id);
+});
+
 $match = $router->match();
 
 

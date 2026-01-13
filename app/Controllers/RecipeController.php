@@ -132,8 +132,24 @@ class RecipeController extends Controller
 
         $title       = trim($_POST['title'] ?? '');
         $description = trim($_POST['description'] ?? '');
-        $ingredients = trim($_POST['ingredients'] ?? '');
-        $steps       = trim($_POST['steps'] ?? '');
+        
+        // Gestion des ingrédients (tableau vers chaîne)
+        $ingredientsInput = $_POST['ingredients'] ?? [];
+        if (is_array($ingredientsInput)) {
+            // On filtre les entrées vides et on joint par des sauts de ligne
+            $ingredients = implode("\n", array_filter(array_map('trim', $ingredientsInput)));
+        } else {
+            $ingredients = trim($ingredientsInput);
+        }
+
+        // Gestion des étapes (tableau vers chaîne)
+        $stepsInput = $_POST['steps'] ?? [];
+        if (is_array($stepsInput)) {
+            $steps = implode("\n", array_filter(array_map('trim', $stepsInput)));
+        } else {
+            $steps = trim($stepsInput);
+        }
+
         $categoryId  = !empty($_POST['category_id']) ? (int) $_POST['category_id'] : null;
 
         // Règles minimales : titre, ingrédients, étapes
@@ -206,8 +222,24 @@ class RecipeController extends Controller
 
         $title       = trim($_POST['title'] ?? '');
         $description = trim($_POST['description'] ?? '');
-        $ingredients = trim($_POST['ingredients'] ?? '');
-        $steps       = trim($_POST['steps'] ?? '');
+        
+        // Gestion des ingrédients (tableau vers chaîne)
+        $ingredientsInput = $_POST['ingredients'] ?? [];
+        if (is_array($ingredientsInput)) {
+            // On filtre les entrées vides et on joint par des sauts de ligne
+            $ingredients = implode("\n", array_filter(array_map('trim', $ingredientsInput)));
+        } else {
+            $ingredients = trim($ingredientsInput);
+        }
+
+        // Gestion des étapes (tableau vers chaîne)
+        $stepsInput = $_POST['steps'] ?? [];
+        if (is_array($stepsInput)) {
+            $steps = implode("\n", array_filter(array_map('trim', $stepsInput)));
+        } else {
+            $steps = trim($stepsInput);
+        }
+
         $categoryId  = !empty($_POST['category_id']) ? (int) $_POST['category_id'] : null;
 
         if ($title === '' || $ingredients === '' || $steps === '') {

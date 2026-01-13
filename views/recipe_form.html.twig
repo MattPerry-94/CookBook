@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% if mode == 'edit' %}Modifier{% else %}Créer{% endif %} une recette - CookBook</title>
-    <link rel="stylesheet" href="/CookBook/public/css/style.css?v=4">
+    <link rel="stylesheet" href="/CookBook/public/css/style.css?v=5">
 </head>
 <body>
 <header>
@@ -15,6 +15,9 @@
         <a href="/CookBook/">Accueil</a>
         {% if currentUser %}
             <a href="/CookBook/my-recipes">Mes recettes</a>
+            {% if isAdmin %}
+                <a href="/CookBook/admin">Administration</a>
+            {% endif %}
             <a href="/CookBook/logout">Déconnexion</a>
             <span class="user-badge">{{ currentUser }}</span>
         {% endif %}
@@ -61,13 +64,131 @@
         </div>
 
         <div>
-            <label for="ingredients">Ingrédients (un par ligne) *</label>
-            <textarea id="ingredients" name="ingredients" required>{{ recipe.ingredients|default('') }}</textarea>
+            <label>Ingrédients *</label>
+            <div id="ingredients-container">
+                {# Si on a déjà des ingrédients (mode edit ou erreur form), on les affiche #}
+                {% if recipe.ingredients is defined and recipe.ingredients %}
+                    {# On tente de splitter par saut de ligne #}
+                    {% set ingredientList = recipe.ingredients|split('\n') %}
+                    {% for ing in ingredientList %}
+                        {% if ing|trim is not empty %}
+                            <div class="ingredient-row">
+                                <input type="text" name="ingredients[]" value="{{ ing|trim }}" required placeholder="Ex: 200g de farine">
+                                <button type="button" class="btn-remove" onclick="removeIngredient(this)">×</button>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    {# Champ vide par défaut #}
+                    <div class="ingredient-row">
+                        <input type="text" name="ingredients[]" required placeholder="Ex: 200g de farine">
+                        <button type="button" class="btn-remove" onclick="removeIngredient(this)">×</button>
+                    </div>
+                {% endif %}
+            </div>
+            <button type="button" class="btn-add" onclick="addIngredient()">+ Ajouter un ingrédient</button>
         </div>
 
+        <script>
+            function addIngredient() {
+                const container = document.getElementById('ingredients-container');
+                const div = document.createElement('div');
+                div.className = 'ingredient-row';
+                div.innerHTML = `
+                    <input type="text" name="ingredients[]" required placeholder="Nouvel ingrédient">
+                    <button type="button" class="btn-remove" onclick="removeIngredient(this)">×</button>
+                `;
+                container.appendChild(div);
+            }
+
+            function removeIngredient(btn) {
+                const container = document.getElementById('ingredients-container');
+                // On garde au moins un champ
+                if (container.querySelectorAll('.ingredient-row').length > 1) {
+                    btn.closest('.ingredient-row').remove();
+                } else {
+                    // Si c'est le dernier, on vide juste la valeur
+                    btn.closest('.ingredient-row').querySelector('input').value = '';
+                }
+            }
+            function addStep() {
+                const container = document.getElementById('steps-container');
+                const div = document.createElement('div');
+                div.className = 'step-row';
+                div.innerHTML = `
+                    <textarea name="steps[]" required placeholder="Nouvelle étape..."></textarea>
+                    <button type="button" class="btn-remove" onclick="removeStep(this)">×</button>
+                `;
+                container.appendChild(div);
+            }
+
+            function removeStep(btn) {
+                const container = document.getElementById('steps-container');
+                if (container.querySelectorAll('.step-row').length > 1) {
+                    btn.closest('.step-row').remove();
+                } else {
+                    btn.closest('.step-row').querySelector('textarea').value = '';
+                }
+            }
+        </script>
+
+        <style>
+            .ingredient-row, .step-row {
+                display: flex;
+                gap: 10px;
+                margin-bottom: 10px;
+            }
+            .ingredient-row input, .step-row textarea {
+                flex: 1;
+            }
+            .step-row textarea {
+                resize: vertical;
+                min-height: 60px;
+            }
+            .btn-remove {
+                background: #ff6b6b;
+                color: white;
+                border: none;
+                width: 40px;
+                cursor: pointer;
+                border-radius: 4px;
+                font-size: 1.2rem;
+            }
+            .btn-add {
+                background: #4ecdc4;
+                color: white;
+                border: none;
+                padding: 8px 15px;
+                border-radius: 4px;
+                cursor: pointer;
+                margin-top: 5px;
+            }
+        </style>
+
         <div>
-            <label for="steps">Étapes de la recette *</label>
-            <textarea id="steps" name="steps" required>{{ recipe.steps|default('') }}</textarea>
+            <label>Étapes de la recette *</label>
+            <div id="steps-container">
+                {# Si on a déjà des étapes (mode edit ou erreur form), on les affiche #}
+                {% if recipe.steps is defined and recipe.steps %}
+                    {# On tente de splitter par saut de ligne #}
+                    {% set stepList = recipe.steps|split('\n') %}
+                    {% for stp in stepList %}
+                        {% if stp|trim is not empty %}
+                            <div class="step-row">
+                                <textarea name="steps[]" required placeholder="Décrivez cette étape...">{{ stp|trim }}</textarea>
+                                <button type="button" class="btn-remove" onclick="removeStep(this)">×</button>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    {# Champ vide par défaut #}
+                    <div class="step-row">
+                        <textarea name="steps[]" required placeholder="Décrivez cette étape..."></textarea>
+                        <button type="button" class="btn-remove" onclick="removeStep(this)">×</button>
+                    </div>
+                {% endif %}
+            </div>
+            <button type="button" class="btn-add" onclick="addStep()">+ Ajouter une étape</button>
         </div>
 
         <div>

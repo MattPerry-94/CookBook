@@ -22,6 +22,9 @@
                 {% endif %}
             </a>
             <a href="/CookBook/recipes/create">Créer une recette</a>
+            {% if isAdmin %}
+                <a href="/CookBook/admin">Administration</a>
+            {% endif %}
             <a href="/CookBook/logout">Déconnexion</a>
             <span class="user-badge">{{ currentUser }}</span>
         {% else %}

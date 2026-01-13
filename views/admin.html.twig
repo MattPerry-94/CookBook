@@ -19,6 +19,9 @@
                 <span class="badge" style="background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.8rem; vertical-align: top;">{{ unreadMessagesCount }}</span>
             {% endif %}
         </a>
+        {% if isAdmin %}
+            <a href="/CookBook/admin">Administration</a>
+        {% endif %}
         <a href="/CookBook/logout">Déconnexion</a>
         {% if currentUser %}
             <span class="user-badge">{{ currentUser }}</span>

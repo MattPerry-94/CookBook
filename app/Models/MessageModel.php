@@ -99,4 +99,16 @@ class MessageModel extends Model
             'otherUserId' => $otherUserId
         ]);
     }
+
+    public function deleteConversation(int $userId, int $contactId): void
+    {
+        $sql = "DELETE FROM {$this->table} 
+                WHERE (sender_id = :u1 AND receiver_id = :u2)
+                   OR (sender_id = :u2 AND receiver_id = :u1)";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
+            'u1' => $userId,
+            'u2' => $contactId
+        ]);
+    }
 }

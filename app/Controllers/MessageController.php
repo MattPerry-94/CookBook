@@ -90,4 +90,14 @@ class MessageController extends Controller
 
         header('Location: /CookBook/messages/' . $receiverId);
     }
+
+    public function delete(int $contactId): void
+    {
+        $this->ensureAuth();
+        $currentUserId = (int) $_SESSION['id_user'];
+        
+        $this->messageModel->deleteConversation($currentUserId, $contactId);
+        
+        header('Location: /CookBook/messages');
+    }
 }

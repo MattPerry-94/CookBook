@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mes messages - CookBook</title>
-    <link rel="stylesheet" href="/CookBook/public/css/style.css">
+    <title>Mes Messages - CookBook</title>
+    <link rel="stylesheet" href="/CookBook/public/css/style.css?v=5">
 </head>
 <body>
 <header>
@@ -22,6 +22,9 @@
                 {% endif %}
             </a>
             <a href="/CookBook/recipes/create">Créer une recette</a>
+            {% if isAdmin %}
+                <a href="/CookBook/admin">Administration</a>
+            {% endif %}
             <a href="/CookBook/logout">Déconnexion</a>
             <span class="user-badge">{{ currentUser }}</span>
         {% else %}
@@ -39,18 +42,23 @@
     {% if conversations is defined and conversations|length > 0 %}
         <div class="conversations-list">
             {% for conv in conversations %}
-                <a href="/CookBook/messages/{{ conv.contact_id }}" class="card conversation-item" style="text-decoration: none; color: inherit; display: block; padding: 1rem; margin-bottom: 1rem;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <h3 style="margin: 0;">{{ conv.contact_name|default(conv.contact_email) }}</h3>
-                        <small style="color: #666;">{{ conv.created_at|date('d/m/Y H:i') }}</small>
-                    </div>
-                    <p style="margin: 0.5rem 0 0; color: #555; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                        {% if conv.sender_id == currentUserId %}
-                            <em>Vous :</em>
-                        {% endif %}
-                        {{ conv.content }}
-                    </p>
-                </a>
+                <div style="position: relative;">
+                    <a href="/CookBook/messages/{{ conv.contact_id }}" class="card conversation-item" style="text-decoration: none; color: inherit; display: block; padding: 1rem; margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding-right: 40px;">
+                            <h3 style="margin: 0;">{{ conv.contact_name|default(conv.contact_email) }}</h3>
+                            <small style="color: #666;">{{ conv.created_at|date('d/m/Y H:i') }}</small>
+                        </div>
+                        <p style="margin: 0.5rem 0 0; color: #555; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 40px;">
+                            {% if conv.sender_id == currentUserId %}
+                                <em>Vous :</em>
+                            {% endif %}
+                            {{ conv.content }}
+                        </p>
+                    </a>
+                    <form action="/CookBook/messages/{{ conv.contact_id }}/delete" method="post" onsubmit="return confirm('Supprimer cette conversation ?');" style="position: absolute; top: 1rem; right: 1rem;">
+                        <button type="submit" style="background: #ff6b6b; color: white; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-weight: bold; line-height: 1;">×</button>
+                    </form>
+                </div>
             {% endfor %}
         </div>
     {% else %}

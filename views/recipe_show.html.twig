@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ recipe.title }} - CookBook</title>
-    <link rel="stylesheet" href="/CookBook/public/css/style.css?v=4">
+    <link rel="stylesheet" href="/CookBook/public/css/style.css?v=5">
 </head>
 <body>
 <header>
@@ -22,6 +22,9 @@
                 {% endif %}
             </a>
             <a href="/CookBook/recipes/create">Créer une recette</a>
+            {% if isAdmin %}
+                <a href="/CookBook/admin">Administration</a>
+            {% endif %}
             <a href="/CookBook/logout">Déconnexion</a>
             <span class="user-badge">{{ currentUser }}</span>
         {% else %}
@@ -50,10 +53,30 @@
         {% endif %}
 
         <h2>Ingrédients</h2>
-        <pre>{{ recipe.ingredients }}</pre>
+        {% if recipe.ingredients %}
+            <ul class="ingredients-list">
+                {% for line in recipe.ingredients|split('\n') %}
+                    {% if line|trim is not empty %}
+                        <li>{{ line|trim }}</li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Aucun ingrédient renseigné.</p>
+        {% endif %}
 
         <h2>Étapes</h2>
-        <pre>{{ recipe.steps }}</pre>
+        {% if recipe.steps %}
+            <ol class="steps-list">
+                {% for line in recipe.steps|split('\n') %}
+                    {% if line|trim is not empty %}
+                        <li>{{ line|trim }}</li>
+                    {% endif %}
+                {% endfor %}
+            </ol>
+        {% else %}
+            <p>Aucune étape renseignée.</p>
+        {% endif %}
 
         <hr style="margin: 2rem 0; border: none; border-top: 1px solid #eee;">
 
