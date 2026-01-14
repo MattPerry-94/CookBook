@@ -7,6 +7,11 @@ use App\Middlewares\JwtService;
 
 final class AuthMiddleware{
 
+    /**
+     * Vérifie l'authentification via API (Bearer Token).
+     *
+     * @return void
+     */
     public static function authApi(): void
     {
         $header = getallheaders();
@@ -31,6 +36,12 @@ final class AuthMiddleware{
         }
     }
 
+    /**
+     * Vérifie l'authentification via session PHP.
+     * Redirige vers la page d'accueil si non connecté.
+     *
+     * @return void
+     */
     public static function authSession(): void
     {
         if(session_status() !== PHP_SESSION_ACTIVE) {

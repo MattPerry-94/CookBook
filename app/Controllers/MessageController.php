@@ -11,6 +11,12 @@ class MessageController extends Controller
     private MessageModel $messageModel;
     private UserModel $userModel;
 
+    /**
+     * Constructeur du contrôleur Message.
+     *
+     * @param PDO $pdo Instance de la connexion PDO.
+     * @param Environment $twig Instance de Twig.
+     */
     public function __construct(PDO $pdo, Environment $twig)
     {
         parent::__construct($pdo, $twig);
@@ -18,6 +24,12 @@ class MessageController extends Controller
         $this->userModel    = new UserModel($pdo);
     }
 
+    /**
+     * Vérifie si l'utilisateur est connecté.
+     * Redirige vers la page de connexion si ce n'est pas le cas.
+     *
+     * @return void
+     */
     private function ensureAuth(): void
     {
         if (empty($_SESSION['id_user'])) {
@@ -26,6 +38,11 @@ class MessageController extends Controller
         }
     }
 
+    /**
+     * Affiche la liste des conversations de l'utilisateur.
+     *
+     * @return void
+     */
     public function index(): void
     {
         $this->ensureAuth();
@@ -37,6 +54,11 @@ class MessageController extends Controller
         ]);
     }
 
+    /**
+     * Affiche la page de création d'une nouvelle conversation.
+     *
+     * @return void
+     */
     public function newConversation(): void
     {
         $this->ensureAuth();
@@ -51,6 +73,12 @@ class MessageController extends Controller
         ]);
     }
 
+    /**
+     * Affiche une conversation spécifique avec un autre utilisateur.
+     *
+     * @param int $otherUserId ID de l'autre utilisateur.
+     * @return void
+     */
     public function show(int $otherUserId): void
     {
         $this->ensureAuth();
@@ -78,6 +106,12 @@ class MessageController extends Controller
         ]);
     }
 
+    /**
+     * Envoie un message à un utilisateur.
+     *
+     * @param int $receiverId ID du destinataire.
+     * @return void
+     */
     public function send(int $receiverId): void
     {
         $this->ensureAuth();
@@ -91,6 +125,12 @@ class MessageController extends Controller
         header('Location: /CookBook/messages/' . $receiverId);
     }
 
+    /**
+     * Supprime une conversation avec un contact.
+     *
+     * @param int $contactId ID du contact avec qui supprimer la conversation.
+     * @return void
+     */
     public function delete(int $contactId): void
     {
         $this->ensureAuth();

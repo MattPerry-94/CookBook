@@ -11,11 +11,25 @@ use PDO;
 
 final class AuthController extends Controller {
 
+    /**
+     * Constructeur du contrôleur d'authentification.
+     *
+     * @param PDO $pdo Instance de la connexion PDO.
+     * @param Environment $twig Instance de Twig.
+     */
     public function __construct(PDO $pdo, Environment $twig)
     {
         parent::__construct($pdo, $twig);
     }
 
+    /**
+     * Traite l'inscription d'un nouvel utilisateur.
+     *
+     * @param string $email Email de l'utilisateur.
+     * @param string $pwd Mot de passe de l'utilisateur.
+     * @param string|null $username Pseudo de l'utilisateur (optionnel).
+     * @return void
+     */
     public function register($email, $pwd, $username = null){
 
         $UserModel = new UserModel($this->pdo,"users");
@@ -39,16 +53,33 @@ final class AuthController extends Controller {
 
     }
         
+    /**
+     * Affiche le formulaire d'inscription.
+     *
+     * @return void
+     */
     public function signup(){
 
        $this->render("signup.html.twig",[]);
 
     }
 
+    /**
+     * Méthode de connexion (placeholder).
+     *
+     * @return void
+     */
     public function connection(){
 
     }
 
+    /**
+     * Traite la connexion d'un utilisateur.
+     *
+     * @param string $mail Email de l'utilisateur.
+     * @param string $pwd Mot de passe de l'utilisateur.
+     * @return void
+     */
     public function login($mail, $pwd){
         $UserModel = new UserModel($this->pdo, "users");
         $result = $UserModel->login($mail, $pwd);
@@ -74,11 +105,21 @@ final class AuthController extends Controller {
         }
     }
 
+    /**
+     * Affiche le formulaire de connexion.
+     *
+     * @return void
+     */
     public function signin(){
 
         $this->render("signin.html.twig",[]);
     }
 
+    /**
+     * Déconnecte l'utilisateur et redirige vers l'accueil.
+     *
+     * @return void
+     */
     public function logout(){
         session_destroy();
         header("Location: /CookBook/");

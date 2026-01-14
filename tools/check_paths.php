@@ -1,4 +1,9 @@
 <?php
+/**
+ * Script de vérification des chemins d'images des recettes.
+ *
+ * Affiche les recettes ayant un chemin d'image non vide.
+ */
 require __DIR__ . '/../vendor/autoload.php';
 
 use App\Database\Database;

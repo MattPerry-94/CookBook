@@ -1,4 +1,11 @@
 <?php
+/**
+ * Point d'entrée principal de l'application CookBook.
+ *
+ * - Initialise Twig et la connexion PDO.
+ * - Démarre la session et expose des variables globales à Twig.
+ * - Configure toutes les routes de l'application via AltoRouter.
+ */
 //require 'vendor/autoload.php';
 require __DIR__ . '/vendor/autoload.php';
 

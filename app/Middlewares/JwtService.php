@@ -6,6 +6,13 @@ class JwtService
 {
     private static string $secret = 'votre_secret_jwt_ici';
 
+    /**
+     * Vérifie et décode un token JWT.
+     *
+     * @param string $token Le token JWT à vérifier.
+     * @return array Le payload du token décodé.
+     * @throws \Exception Si le token est invalide.
+     */
     public static function verify(string $token): array
     {
         // Implémentation basique/dummy pour l'instant

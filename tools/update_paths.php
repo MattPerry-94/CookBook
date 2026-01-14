@@ -1,4 +1,10 @@
 <?php
+/**
+ * Script de maintenance pour mettre à jour les chemins d'images des recettes.
+ *
+ * Remplace les anciens chemins /application/public/uploads/ par
+ * /CookBook/public/uploads/ dans la table recipes.
+ */
 require __DIR__ . '/../vendor/autoload.php';
 
 use App\Database\Database;

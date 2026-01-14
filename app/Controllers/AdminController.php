@@ -10,11 +10,23 @@ use PDO;
 
 final class AdminController extends Controller{
 
+    /**
+     * Constructeur du contrôleur Admin.
+     *
+     * @param PDO $pdo Instance de la connexion PDO.
+     * @param Environment $twig Instance de Twig.
+     */
      public function __construct(PDO $pdo, Environment $twig)
     {
         parent::__construct($pdo, $twig);
     }
 
+    /**
+     * Vérifie que l'utilisateur connecté est administrateur.
+     * Redirige vers l'accueil ou la connexion sinon.
+     *
+     * @return void
+     */
     private function ensureAdmin(): void
     {
         if (empty($_SESSION['id_user'])) {
@@ -31,6 +43,11 @@ final class AdminController extends Controller{
         }
     }
 
+    /**
+     * Tableau de bord principal de l'administration.
+     *
+     * @return void
+     */
     public function index(): void
     {
         $this->ensureAdmin();
@@ -72,6 +89,12 @@ final class AdminController extends Controller{
         ]);
     }
 
+    /**
+     * Affiche le formulaire d'édition d'un utilisateur.
+     *
+     * @param int $id ID de l'utilisateur à éditer.
+     * @return void
+     */
     public function editForm(int $id): void
     {
         $this->ensureAdmin();
@@ -88,6 +111,12 @@ final class AdminController extends Controller{
         ]);
     }
 
+    /**
+     * Traite la mise à jour des informations d'un utilisateur.
+     *
+     * @param int $id ID de l'utilisateur.
+     * @return void
+     */
     public function edit(int $id): void
     {
         $this->ensureAdmin();
@@ -116,6 +145,12 @@ final class AdminController extends Controller{
         header('Location: /CookBook/admin');
     }
 
+    /**
+     * Supprime un utilisateur (sauf soi-même).
+     *
+     * @param int $id ID de l'utilisateur à supprimer.
+     * @return void
+     */
     public function delete(int $id): void
     {
         $this->ensureAdmin();
@@ -131,7 +166,11 @@ final class AdminController extends Controller{
         header('Location: /CookBook/admin');
     }
 
-    // Liste de toutes les recettes (modération)
+    /**
+     * Liste toutes les recettes pour modération.
+     *
+     * @return void
+     */
     public function recipes(): void
     {
         $this->ensureAdmin();
@@ -143,7 +182,12 @@ final class AdminController extends Controller{
         ]);
     }
 
-    // Suppression d'une recette par un admin
+    /**
+     * Supprime une recette en tant qu'admin.
+     *
+     * @param int $id ID de la recette.
+     * @return void
+     */
     public function deleteRecipe(int $id): void
     {
         $this->ensureAdmin();
@@ -152,7 +196,12 @@ final class AdminController extends Controller{
         header('Location: /CookBook/admin/recipes');
     }
 
-    // Suppression d'un commentaire par un admin
+    /**
+     * Supprime un commentaire en tant qu'admin.
+     *
+     * @param int $id ID du commentaire.
+     * @return void
+     */
     public function deleteComment(int $id): void
     {
         $this->ensureAdmin();

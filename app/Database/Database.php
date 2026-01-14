@@ -7,8 +7,19 @@ use PDOException;
 
 class Database{
 
+    /**
+     * Instance PDO unique (singleton).
+     *
+     * @var PDO|null
+     */
     private static ? PDO $instance = null;
     
+    /**
+     * Retourne l'instance PDO unique de l'application.
+     * La connexion est créée au premier appel.
+     *
+     * @return PDO Instance PDO connectée à la base de données.
+     */
     public static function getInstance(): PDO {
         if (self::$instance === null) {
             $dsn = 'mysql:host=localhost;dbname=cook_book;charset=utf8mb4';

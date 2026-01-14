@@ -5,11 +5,24 @@ use PDO;
 
 class MessageModel extends Model
 {
+    /**
+     * Constructeur du modèle Message.
+     *
+     * @param PDO $db Instance de la connexion PDO.
+     */
     public function __construct(PDO $db)
     {
         parent::__construct($db, 'messages');
     }
 
+    /**
+     * Crée un nouveau message.
+     *
+     * @param int $senderId ID de l'expéditeur.
+     * @param int $receiverId ID du destinataire.
+     * @param string $content Contenu du message.
+     * @return bool Retourne true si le message a été créé avec succès, sinon false.
+     */
     public function create(int $senderId, int $receiverId, string $content): bool
     {
         $sql = "INSERT INTO {$this->table} (sender_id, receiver_id, content) 
@@ -22,7 +35,12 @@ class MessageModel extends Model
         ]);
     }
 
-    // Récupère la liste des conversations (dernier message par interlocuteur)
+    /**
+     * Récupère la liste des conversations (dernier message par interlocuteur).
+     *
+     * @param int $userId ID de l'utilisateur courant.
+     * @return array Liste des conversations.
+     */
     public function getConversations(int $userId): array
     {
         // On évite les paramètres nommés multiples identiques qui peuvent poser problème avec certains drivers PDO
@@ -59,7 +77,13 @@ class MessageModel extends Model
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Récupère tous les messages entre deux utilisateurs
+    /**
+     * Récupère tous les messages entre deux utilisateurs.
+     *
+     * @param int $userId1 ID du premier utilisateur.
+     * @param int $userId2 ID du second utilisateur.
+     * @return array Liste des messages triés par date croissante.
+     */
     public function getMessagesBetween(int $userId1, int $userId2): array
     {
         $sql = "SELECT m.*, u.name as sender_name 
@@ -79,6 +103,12 @@ class MessageModel extends Model
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Compte le nombre de messages non lus pour un utilisateur.
+     *
+     * @param int $userId ID de l'utilisateur.
+     * @return int Nombre de messages non lus.
+     */
     public function countUnread(int $userId): int
     {
         $sql = "SELECT COUNT(*) as c FROM {$this->table} WHERE receiver_id = :userId AND is_read = 0";
@@ -88,6 +118,13 @@ class MessageModel extends Model
         return (int) ($row['c'] ?? 0);
     }
 
+    /**
+     * Marque les messages comme lus entre deux utilisateurs.
+     *
+     * @param int $userId ID de l'utilisateur qui lit les messages (destinataire).
+     * @param int $otherUserId ID de l'utilisateur expéditeur.
+     * @return void
+     */
     public function markAsRead(int $userId, int $otherUserId): void
     {
         $sql = "UPDATE {$this->table} 
@@ -100,6 +137,13 @@ class MessageModel extends Model
         ]);
     }
 
+    /**
+     * Supprime une conversation entière entre deux utilisateurs.
+     *
+     * @param int $userId ID de l'utilisateur courant.
+     * @param int $contactId ID du contact.
+     * @return void
+     */
     public function deleteConversation(int $userId, int $contactId): void
     {
         $sql = "DELETE FROM {$this->table} 

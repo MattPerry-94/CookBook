@@ -1,5 +1,9 @@
 <?php
-// Petit outil de création d'admin pour le projet CookBook (à lancer en local)
+/**
+ * Petit outil de création d'un utilisateur administrateur pour CookBook.
+ *
+ * À lancer en local pour créer rapidement un compte admin par défaut.
+ */
 
 require __DIR__ . '/../vendor/autoload.php';
 

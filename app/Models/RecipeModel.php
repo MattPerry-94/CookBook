@@ -5,11 +5,22 @@ use PDO;
 
 class RecipeModel extends Model
 {
+    /**
+     * Constructeur du modèle Recette.
+     *
+     * @param PDO $db Instance de la connexion PDO.
+     */
     public function __construct(PDO $db)
     {
         parent::__construct($db, 'recipes');
     }
 
+    /**
+     * Récupère toutes les recettes d'un utilisateur spécifique.
+     *
+     * @param int $userId ID de l'utilisateur.
+     * @return array Liste des recettes.
+     */
     public function findAllByUser(int $userId): array
     {
         $sql = "SELECT r.*, c.name AS category_name
@@ -22,6 +33,11 @@ class RecipeModel extends Model
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Récupère la liste publique des recettes avec le nom de l'auteur.
+     *
+     * @return array Liste des recettes publiques.
+     */
     public function findPublicList(): array
     {
         $sql = "SELECT r.*, u.name AS author_name
@@ -32,6 +48,11 @@ class RecipeModel extends Model
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Récupère toutes les recettes avec les informations de l'auteur (pour l'admin).
+     *
+     * @return array Liste complète des recettes.
+     */
     public function findAllWithUser(): array
     {
         $sql = "SELECT r.*, u.email AS author_email, u.name AS author_name
@@ -42,6 +63,13 @@ class RecipeModel extends Model
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Trouve une recette par son ID pour un utilisateur spécifique.
+     *
+     * @param int $id ID de la recette.
+     * @param int $userId ID de l'utilisateur.
+     * @return array|null Les données de la recette ou null si non trouvée.
+     */
     public function findByIdForUser(int $id, int $userId): ?array
     {
         $sql = "SELECT r.*, c.name AS category_name
@@ -55,6 +83,12 @@ class RecipeModel extends Model
         return $row ?: null;
     }
 
+    /**
+     * Crée une nouvelle recette.
+     *
+     * @param array $data Données de la recette.
+     * @return int ID de la recette créée.
+     */
     public function create(array $data): int
     {
         $sql = "INSERT INTO {$this->table}
@@ -75,6 +109,14 @@ class RecipeModel extends Model
         return (int) $this->db->lastInsertId();
     }
 
+    /**
+     * Met à jour une recette pour un utilisateur.
+     *
+     * @param int $id ID de la recette.
+     * @param int $userId ID de l'utilisateur.
+     * @param array $data Nouvelles données de la recette.
+     * @return int Nombre de lignes affectées.
+     */
     public function updateForUser(int $id, int $userId, array $data): int
     {
         $sql = "UPDATE {$this->table}
@@ -102,6 +144,12 @@ class RecipeModel extends Model
         return $stmt->rowCount();
     }
 
+    /**
+     * Recherche des recettes publiques par mot-clé.
+     *
+     * @param string $query Mot-clé de recherche.
+     * @return array Résultats de la recherche.
+     */
     public function searchPublic(string $query): array
     {
         $like = '%' . $query . '%';

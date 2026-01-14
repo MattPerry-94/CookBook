@@ -13,6 +13,12 @@ class RecipeController extends Controller
     private CategoryModel $categoryModel;
     private CommentModel $commentModel;
 
+    /**
+     * Constructeur du contrôleur Recette.
+     *
+     * @param PDO $pdo Instance de la connexion PDO.
+     * @param Environment $twig Instance de Twig.
+     */
     public function __construct(PDO $pdo, Environment $twig)
     {
         parent::__construct($pdo, $twig);
@@ -21,7 +27,11 @@ class RecipeController extends Controller
         $this->commentModel  = new CommentModel($pdo);
     }
 
-    // Liste publique des recettes (page d'accueil)
+    /**
+     * Liste publique des recettes (page d'accueil).
+     *
+     * @return void
+     */
     public function list(): void
     {
         $q = isset($_GET['q']) ? trim($_GET['q']) : '';
@@ -43,7 +53,12 @@ class RecipeController extends Controller
         ]);
     }
 
-    // Détail d'une recette
+    /**
+     * Affiche le détail d'une recette.
+     *
+     * @param int $id ID de la recette.
+     * @return void
+     */
     public function show(int $id): void
     {
         $sql  = "SELECT r.*, u.name AS author_name, u.email AS author_email, c.name AS category_name
@@ -69,6 +84,12 @@ class RecipeController extends Controller
         ]);
     }
 
+    /**
+     * Ajoute un commentaire à une recette.
+     *
+     * @param int $id ID de la recette.
+     * @return void
+     */
     public function addComment(int $id): void
     {
         if (empty($_SESSION['id_user'])) {
@@ -91,7 +112,11 @@ class RecipeController extends Controller
         header('Location: /CookBook/recipes/' . $id);
     }
 
-    // Liste des recettes de l'utilisateur connecté
+    /**
+     * Affiche la liste des recettes de l'utilisateur connecté.
+     *
+     * @return void
+     */
     public function myRecipes(): void
     {
         if (empty($_SESSION['id_user'])) {
@@ -107,7 +132,11 @@ class RecipeController extends Controller
         ]);
     }
 
-    // Formulaire de création
+    /**
+     * Affiche le formulaire de création de recette.
+     *
+     * @return void
+     */
     public function createForm(): void
     {
         if (empty($_SESSION['id_user'])) {
@@ -122,7 +151,11 @@ class RecipeController extends Controller
         ]);
     }
 
-    // Traitement création
+    /**
+     * Traite la création d'une recette.
+     *
+     * @return void
+     */
     public function create(): void
     {
         if (empty($_SESSION['id_user'])) {
@@ -180,7 +213,12 @@ class RecipeController extends Controller
         header('Location: /CookBook/my-recipes');
     }
 
-    // Formulaire d'édition
+    /**
+     * Affiche le formulaire d'édition d'une recette.
+     *
+     * @param int $id ID de la recette à éditer.
+     * @return void
+     */
     public function editForm(int $id): void
     {
         if (empty($_SESSION['id_user'])) {
@@ -204,7 +242,12 @@ class RecipeController extends Controller
         ]);
     }
 
-    // Traitement édition
+    /**
+     * Traite l'édition d'une recette.
+     *
+     * @param int $id ID de la recette.
+     * @return void
+     */
     public function edit(int $id): void
     {
         if (empty($_SESSION['id_user'])) {
@@ -268,7 +311,12 @@ class RecipeController extends Controller
         header('Location: /CookBook/my-recipes');
     }
 
-    // Suppression
+    /**
+     * Supprime une recette.
+     *
+     * @param int $id ID de la recette.
+     * @return void
+     */
     public function delete(int $id): void
     {
         if (empty($_SESSION['id_user'])) {
@@ -285,7 +333,10 @@ class RecipeController extends Controller
     }
 
     /**
-     * Gestion simple de l'upload d'image (type + taille)
+     * Gestion simple de l'upload d'image (type + taille).
+     *
+     * @param string|null $currentPath Chemin actuel de l'image (si existante).
+     * @return string|null Nouveau chemin ou chemin actuel.
      */
     private function handleUpload(?string $currentPath = null): ?string
     {

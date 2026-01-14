@@ -6,12 +6,25 @@ use App\Models\Model;
 
 class UserModel extends Model {
 
+    /**
+     * Constructeur du modèle User.
+     *
+     * @param PDO $db Instance de la connexion PDO.
+     */
      public function __construct(PDO $db)
     {
         
         parent::__construct($db, 'users');
     }
 
+    /**
+     * Ajoute un nouvel utilisateur.
+     *
+     * @param string $mail Email de l'utilisateur.
+     * @param string $pwd Mot de passe hashé de l'utilisateur.
+     * @param string|null $username Pseudo de l'utilisateur (optionnel).
+     * @return int ID de l'utilisateur créé ou 0 si échec.
+     */
     public function addUser(string $mail, string $pwd, ?string $username = null){
         $request = "INSERT INTO {$this->table} (email, pwd, name, active) VALUES(:email, :pwd, :name, 1)";
         $stmt = $this->db->prepare($request);
@@ -28,6 +41,13 @@ class UserModel extends Model {
         return 0;
     }
 
+    /**
+     * Vérifie les identifiants de connexion.
+     *
+     * @param string $email Email de l'utilisateur.
+     * @param string $password Mot de passe en clair.
+     * @return array|false Retourne les données de l'utilisateur si succès, sinon false.
+     */
     public function login(string $email, string $password): array|false
     {
         $sql ="SELECT * FROM {$this->table} WHERE email = :email LIMIT 1";
@@ -52,6 +72,13 @@ class UserModel extends Model {
         return $user;
 
     }
+
+    /**
+     * Trouve un utilisateur par son email.
+     *
+     * @param string $email Email de l'utilisateur.
+     * @return array|false Données de l'utilisateur ou false si non trouvé.
+     */
     public function findByEmail($email)
     {
         $sql = "SELECT * FROM users WHERE email = :email";
@@ -60,6 +87,11 @@ class UserModel extends Model {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Récupère tous les utilisateurs.
+     *
+     * @return array Liste des utilisateurs.
+     */
     public function allUsers(): array
     {
         $sql = "SELECT * FROM {$this->table} ORDER BY created_at DESC";
@@ -67,6 +99,16 @@ class UserModel extends Model {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Met à jour les informations d'un utilisateur.
+     *
+     * @param int $id ID de l'utilisateur.
+     * @param string $email Nouvel email.
+     * @param string|null $name Nouveau nom.
+     * @param string $role Nouveau rôle.
+     * @param int $active Statut d'activation (0 ou 1).
+     * @return int Nombre de lignes affectées.
+     */
     public function updateUser(int $id, string $email, ?string $name, string $role, int $active): int
     {
         $sql = "UPDATE {$this->table}
@@ -88,6 +130,11 @@ class UserModel extends Model {
 
     /**
      * Crée un utilisateur administrateur si l'email n'existe pas encore.
+     *
+     * @param string $email Email de l'admin.
+     * @param string $password Mot de passe de l'admin.
+     * @param string|null $name Nom de l'admin.
+     * @return bool Retourne true si créé, false sinon.
      */
     public function createAdmin(string $email, string $password, ?string $name = null): bool
     {
