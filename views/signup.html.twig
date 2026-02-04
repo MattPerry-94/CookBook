@@ -12,15 +12,19 @@
         <h1>Inscription</h1>
         <p class="auth-subtitle">Créez votre compte pour gérer vos recettes.</p>
 
+        {% if error is defined %}
+            <div class="error" style="color: red; margin-bottom: 1rem;">{{ error }}</div>
+        {% endif %}
+
         <form method="POST" action="/CookBook/signup">
             <div>
                 <label for="username">Nom d'utilisateur</label>
-                <input placeholder="Votre pseudo" type="text" id="username" name="username" required />
+                <input placeholder="Votre pseudo" type="text" id="username" name="username" value="{{ old_username|default('') }}" required />
             </div>
 
             <div>
                 <label for="email">Votre email</label>
-                <input placeholder="nom@fournisseur.ext" type="email" id="email" name="email" required />
+                <input placeholder="nom@fournisseur.ext" type="email" id="email" name="email" value="{{ old_email|default('') }}" required />
             </div>
 
             <div>

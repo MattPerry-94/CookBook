@@ -33,6 +33,43 @@ final class AuthController extends Controller {
     public function register($email, $pwd, $username = null){
 
         $UserModel = new UserModel($this->pdo,"users");
+
+        // Vérification du format de l'email
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $this->render("signup.html.twig", [
+                'error' => 'Format d\'email invalide.',
+                'old_email' => $email,
+                'old_username' => $username
+            ]);
+            return;
+        }
+
+        // Vérification si l'email existe déjà
+        if ($UserModel->findByEmail($email)) {
+            $this->render("signup.html.twig", [
+                'error' => 'Cet email est déjà utilisé par un autre compte.',
+                'old_email' => $email,
+                'old_username' => $username
+            ]);
+            return;
+        }
+
+        // Validation de la complexité du mot de passe
+        // Min 12 caractères, 1 maj, 1 min, 1 chiffre, 1 spécial
+        if (strlen($pwd) < 12 || 
+            !preg_match('/[A-Z]/', $pwd) || 
+            !preg_match('/[a-z]/', $pwd) || 
+            !preg_match('/[0-9]/', $pwd) || 
+            !preg_match('/[^a-zA-Z0-9]/', $pwd)) {
+            
+            $this->render("signup.html.twig", [
+                'error' => 'Le mot de passe doit faire au moins 12 caractères et contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial.',
+                'old_email' => $email,
+                'old_username' => $username
+            ]);
+            return;
+        }
+
         $hash = password_hash($pwd, PASSWORD_DEFAULT);
         
         $newUserId = $UserModel->addUser($email, $hash, $username);
@@ -82,6 +119,16 @@ final class AuthController extends Controller {
      */
     public function login($mail, $pwd){
         $UserModel = new UserModel($this->pdo, "users");
+
+        // Vérification du format de l'email (doit contenir @, etc.)
+        if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
+            $this->render("signin.html.twig", [
+                'error' => 'Format d\'email invalide.',
+                'old_email' => $mail
+            ]);
+            return;
+        }
+
         $result = $UserModel->login($mail, $pwd);
         if($result === false){
             $this->render("signin.html.twig", [

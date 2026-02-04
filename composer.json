@@ -20,5 +20,9 @@
         "altorouter/altorouter": "^2.0",
         "twig/twig": "^3.8",
         "phpmailer/phpmailer": "^7.0"
+    },
+    "require-dev": {
+        "phpdocumentor/phpdocumentor": "*",
+        "phpunit/phpunit": "^11.5"
     }
 }
