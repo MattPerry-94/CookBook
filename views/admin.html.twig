@@ -7,6 +7,20 @@
     <link rel="stylesheet" href="/CookBook/public/css/style.css?v=4">
 </head>
 <body>
+<button type="button" class="nav-back-button" data-nav-back aria-label="Retour" title="Retour">←</button>
+<script>
+(function () {
+    var btn = document.querySelector('[data-nav-back]');
+    if (!btn) { return; }
+    if (window.history.length <= 1) {
+        btn.style.display = 'none';
+        return;
+    }
+    btn.addEventListener('click', function () {
+        window.history.back();
+    });
+})();
+</script>
 <header>
     <div>
         <strong>CookBook - Admin</strong>
@@ -16,7 +30,7 @@
         <a href="/CookBook/messages">
             Messages
             {% if unreadMessagesCount > 0 %}
-                <span class="badge" style="background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.8rem; vertical-align: top;">{{ unreadMessagesCount }}</span>
+                <span class="badge" style="background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.8rem; vertical-align: top;">{{ unreadMessagesCount|escape }}</span>
             {% endif %}
         </a>
         {% if isAdmin %}
@@ -24,7 +38,7 @@
         {% endif %}
         <a href="/CookBook/logout">Déconnexion</a>
         {% if currentUser %}
-            <span class="user-badge">{{ currentUser }}</span>
+            <span class="user-badge">{{ currentUser|escape }}</span>
         {% endif %}
     </nav>
 </header>
@@ -65,9 +79,9 @@
             {% for user in users %}
                 <tr>
                     <td>{{ user.id }}</td>
-                    <td>{{ user.name|default('-') }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.role }}</td>
+                    <td>{{ user.name|default('-')|escape }}</td>
+                    <td>{{ user.email|escape }}</td>
+                    <td>{{ user.role|escape }}</td>
                     <td>{{ user.active is defined and user.active == 1 ? 'Oui' : 'Non' }}</td>
                     <td>{{ user.created_at|date('d/m/Y H:i') }}</td>
                     <td class="actions">

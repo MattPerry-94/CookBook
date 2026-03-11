@@ -7,6 +7,20 @@
     <link rel="stylesheet" href="/CookBook/public/css/style.css?v=5">
 </head>
 <body>
+<button type="button" class="nav-back-button" data-nav-back aria-label="Retour" title="Retour">←</button>
+<script>
+(function () {
+    var btn = document.querySelector('[data-nav-back]');
+    if (!btn) { return; }
+    if (window.history.length <= 1) {
+        btn.style.display = 'none';
+        return;
+    }
+    btn.addEventListener('click', function () {
+        window.history.back();
+    });
+})();
+</script>
 <header>
     <div>
         <strong>CookBook</strong>
@@ -19,7 +33,7 @@
                 <a href="/CookBook/admin">Administration</a>
             {% endif %}
             <a href="/CookBook/logout">Déconnexion</a>
-            <span class="user-badge">{{ currentUser }}</span>
+            <span class="user-badge">{{ currentUser|escape }}</span>
         {% endif %}
     </nav>
 </header>
@@ -28,7 +42,7 @@
     <h1>{% if mode == 'edit' %}Modifier{% else %}Créer{% endif %} une recette</h1>
 
     {% if error is defined %}
-        <div class="error">{{ error }}</div>
+        <div class="error">{{ error|escape }}</div>
     {% endif %}
 
     {% if mode == 'edit' %}
@@ -39,7 +53,7 @@
         <div>
             <label for="title">Titre de la recette *</label>
             <input type="text" id="title" name="title"
-                   value="{{ (recipe.title is defined ? recipe.title : (old.title|default(''))) }}"
+                   value="{{ (recipe.title is defined ? recipe.title : (old.title|default('')))|escape }}"
                    required>
         </div>
 
@@ -52,7 +66,7 @@
                         {% if recipe.category_id is defined and recipe.category_id == category.id %}
                             selected
                         {% endif %}>
-                        {{ category.name }}
+                        {{ category.name|escape }}
                     </option>
                 {% endfor %}
             </select>
@@ -60,7 +74,7 @@
 
         <div>
             <label for="description">Description courte</label>
-            <textarea id="description" name="description">{{ recipe.description|default('') }}</textarea>
+            <textarea id="description" name="description">{{ recipe.description|default('')|escape }}</textarea>
         </div>
 
         <div>
@@ -73,7 +87,7 @@
                     {% for ing in ingredientList %}
                         {% if ing|trim is not empty %}
                             <div class="ingredient-row">
-                                <input type="text" name="ingredients[]" value="{{ ing|trim }}" required placeholder="Ex: 200g de farine">
+                                <input type="text" name="ingredients[]" value="{{ ing|trim|escape }}" required placeholder="Ex: 200g de farine">
                                 <button type="button" class="btn-remove" onclick="removeIngredient(this)">×</button>
                             </div>
                         {% endif %}
@@ -175,7 +189,7 @@
                     {% for stp in stepList %}
                         {% if stp|trim is not empty %}
                             <div class="step-row">
-                                <textarea name="steps[]" required placeholder="Décrivez cette étape...">{{ stp|trim }}</textarea>
+                                <textarea name="steps[]" required placeholder="Décrivez cette étape...">{{ stp|trim|escape }}</textarea>
                                 <button type="button" class="btn-remove" onclick="removeStep(this)">×</button>
                             </div>
                         {% endif %}
@@ -196,7 +210,7 @@
             <input type="file" id="image" name="image" accept="image/*">
             {% if recipe.image_path is defined and recipe.image_path %}
                 <p>Image actuelle :</p>
-                <img src="{{ recipe.image_path }}" alt="Image actuelle" style="max-width: 200px;">
+                <img src="{{ recipe.image_path|escape }}" alt="Image actuelle" style="max-width: 200px;">
             {% endif %}
         </div>
 

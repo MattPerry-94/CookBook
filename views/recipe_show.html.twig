@@ -3,10 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ recipe.title }} - CookBook</title>
+    <title>{{ recipe.title|escape }} - CookBook</title>
     <link rel="stylesheet" href="/CookBook/public/css/style.css?v=5">
 </head>
 <body>
+<button type="button" class="nav-back-button" data-nav-back aria-label="Retour" title="Retour">←</button>
+<script>
+(function () {
+    var btn = document.querySelector('[data-nav-back]');
+    if (!btn) { return; }
+    if (window.history.length <= 1) {
+        btn.style.display = 'none';
+        return;
+    }
+    btn.addEventListener('click', function () {
+        window.history.back();
+    });
+})();
+</script>
 <header>
     <div>
         <strong>CookBook</strong>
@@ -18,7 +32,7 @@
             <a href="/CookBook/messages">
                 Messages
                 {% if unreadMessagesCount > 0 %}
-                    <span class="badge" style="background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.8rem; vertical-align: top;">{{ unreadMessagesCount }}</span>
+                    <span class="badge" style="background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.8rem; vertical-align: top;">{{ unreadMessagesCount|escape }}</span>
                 {% endif %}
             </a>
             <a href="/CookBook/recipes/create">Créer une recette</a>
@@ -26,7 +40,7 @@
                 <a href="/CookBook/admin">Administration</a>
             {% endif %}
             <a href="/CookBook/logout">Déconnexion</a>
-            <span class="user-badge">{{ currentUser }}</span>
+            <span class="user-badge">{{ currentUser|escape }}</span>
         {% else %}
             <a href="/CookBook/signin">Connexion</a>
         {% endif %}
@@ -35,21 +49,21 @@
 
 <main class="recipe-show">
     {% if recipe.image_path %}
-        <img src="{{ recipe.image_path }}" alt="Photo de {{ recipe.title }}" class="hero-img">
+        <img src="{{ recipe.image_path|escape }}" alt="Photo de {{ recipe.title|escape }}" class="hero-img">
     {% endif %}
     <div class="content">
-        <h1>{{ recipe.title }}</h1>
+        <h1>{{ recipe.title|escape }}</h1>
         <div class="meta">
             {% if recipe.category_name %}
-                <span>{{ recipe.category_name }} • </span>
+                <span>{{ recipe.category_name|escape }} • </span>
             {% endif %}
             {% if recipe.author_name %}
-                <span>par {{ recipe.author_name }}</span>
+                <span>par {{ recipe.author_name|escape }}</span>
             {% endif %}
         </div>
 
         {% if recipe.description %}
-            <p>{{ recipe.description }}</p>
+            <p>{{ recipe.description|escape }}</p>
         {% endif %}
 
         <h2>Ingrédients</h2>
@@ -57,7 +71,7 @@
             <ul class="ingredients-list">
                 {% for line in recipe.ingredients|split('\n') %}
                     {% if line|trim is not empty %}
-                        <li>{{ line|trim }}</li>
+                        <li>{{ line|trim|escape }}</li>
                     {% endif %}
                 {% endfor %}
             </ul>
@@ -70,7 +84,7 @@
             <ol class="steps-list">
                 {% for line in recipe.steps|split('\n') %}
                     {% if line|trim is not empty %}
-                        <li>{{ line|trim }}</li>
+                        <li>{{ line|trim|escape }}</li>
                     {% endif %}
                 {% endfor %}
             </ol>
@@ -81,7 +95,7 @@
         <hr style="margin: 2rem 0; border: none; border-top: 1px solid #eee;">
 
         <section class="comments">
-            <h2>Commentaires ({{ comments|length }})</h2>
+            <h2>Commentaires ({{ comments|length|escape }})</h2>
 
             {% if currentUser %}
                 <form action="/CookBook/recipes/{{ recipe.id }}/comment" method="post" class="comment-form">
@@ -101,7 +115,7 @@
                     <div class="comment" style="background: #f9f9f9; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
                         <div class="comment-header" style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.9rem; color: #666;">
                             <div>
-                                <strong>{{ comment.author_name }}</strong>
+                                <strong>{{ comment.author_name|escape }}</strong>
                                 <span> • {{ comment.created_at|date('d/m/Y H:i') }}</span>
                             </div>
                             {% if isAdmin %}
@@ -111,7 +125,7 @@
                             {% endif %}
                         </div>
                         <div class="comment-body">
-                            {{ comment.content|nl2br }}
+                            {{ comment.content|escape|nl2br }}
                         </div>
                     </div>
                 {% else %}

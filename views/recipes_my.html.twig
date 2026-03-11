@@ -7,6 +7,20 @@
     <link rel="stylesheet" href="/CookBook/public/css/style.css?v=4">
 </head>
 <body>
+<button type="button" class="nav-back-button" data-nav-back aria-label="Retour" title="Retour">←</button>
+<script>
+(function () {
+    var btn = document.querySelector('[data-nav-back]');
+    if (!btn) { return; }
+    if (window.history.length <= 1) {
+        btn.style.display = 'none';
+        return;
+    }
+    btn.addEventListener('click', function () {
+        window.history.back();
+    });
+})();
+</script>
 <header>
     <div>
         <strong>CookBook</strong>
@@ -17,7 +31,7 @@
             <a href="/CookBook/messages">
                 Messages
                 {% if unreadMessagesCount > 0 %}
-                    <span class="badge" style="background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.8rem; vertical-align: top;">{{ unreadMessagesCount }}</span>
+                    <span class="badge" style="background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.8rem; vertical-align: top;">{{ unreadMessagesCount|escape }}</span>
                 {% endif %}
             </a>
             <a href="/CookBook/recipes/create">Créer une recette</a>
@@ -25,7 +39,7 @@
                 <a href="/CookBook/admin">Administration</a>
             {% endif %}
             <a href="/CookBook/logout">Déconnexion</a>
-            <span class="user-badge">{{ currentUser }}</span>
+            <span class="user-badge">{{ currentUser|escape }}</span>
         {% endif %}
     </nav>
 </header>
@@ -49,8 +63,8 @@
             <tbody>
             {% for recipe in recipes %}
                 <tr>
-                    <td>{{ recipe.title }}</td>
-                    <td>{{ recipe.category_name|default('-') }}</td>
+                    <td>{{ recipe.title|escape }}</td>
+                    <td>{{ recipe.category_name|default('-')|escape }}</td>
                     <td>{{ recipe.created_at|date('d/m/Y H:i') }}</td>
                     <td class="actions">
                         <a href="/CookBook/recipes/{{ recipe.id }}">Voir</a>

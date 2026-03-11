@@ -7,6 +7,20 @@
     <link rel="stylesheet" href="/CookBook/public/css/style.css?v=5">
 </head>
 <body>
+<button type="button" class="nav-back-button" data-nav-back aria-label="Retour" title="Retour">←</button>
+<script>
+(function () {
+    var btn = document.querySelector('[data-nav-back]');
+    if (!btn) { return; }
+    if (window.history.length <= 1) {
+        btn.style.display = 'none';
+        return;
+    }
+    btn.addEventListener('click', function () {
+        window.history.back();
+    });
+})();
+</script>
 <header>
     <div>
         <strong>CookBook</strong>
@@ -18,7 +32,7 @@
             <a href="/CookBook/messages" class="active">
                 Messages
                 {% if unreadMessagesCount > 0 %}
-                    <span class="badge" style="background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.8rem; vertical-align: top;">{{ unreadMessagesCount }}</span>
+                    <span class="badge" style="background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.8rem; vertical-align: top;">{{ unreadMessagesCount|escape }}</span>
                 {% endif %}
             </a>
             <a href="/CookBook/recipes/create">Créer une recette</a>
@@ -26,7 +40,7 @@
                 <a href="/CookBook/admin">Administration</a>
             {% endif %}
             <a href="/CookBook/logout">Déconnexion</a>
-            <span class="user-badge">{{ currentUser }}</span>
+            <span class="user-badge">{{ currentUser|escape }}</span>
         {% else %}
             <a href="/CookBook/signin">Connexion</a>
         {% endif %}
@@ -45,14 +59,14 @@
                 <div style="position: relative;">
                     <a href="/CookBook/messages/{{ conv.contact_id }}" class="card conversation-item" style="text-decoration: none; color: inherit; display: block; padding: 1rem; margin-bottom: 1rem;">
                         <div style="display: flex; justify-content: space-between; align-items: center; padding-right: 40px;">
-                            <h3 style="margin: 0;">{{ conv.contact_name|default(conv.contact_email) }}</h3>
+                            <h3 style="margin: 0;">{{ conv.contact_name|default(conv.contact_email)|escape }}</h3>
                             <small style="color: #666;">{{ conv.created_at|date('d/m/Y H:i') }}</small>
                         </div>
                         <p style="margin: 0.5rem 0 0; color: #555; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 40px;">
                             {% if conv.sender_id == currentUserId %}
                                 <em>Vous :</em>
                             {% endif %}
-                            {{ conv.content }}
+                            {{ conv.content|escape }}
                         </p>
                     </a>
                     <form action="/CookBook/messages/{{ conv.contact_id }}/delete" method="post" onsubmit="return confirm('Supprimer cette conversation ?');" style="position: absolute; top: 1rem; right: 1rem;">

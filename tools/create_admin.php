@@ -15,10 +15,10 @@ $userModel = new UserModel($pdo);
 
 // Identifiant et mot de passe demandés
 $login    = 'MattP';
-$password = 'mdp123';
+$password = 'Mdp123$';
 
 // On utilise l'identifiant comme "name" et un email simple basé dessus
-$email = 'mattp@example.com';
+$email = 'mattp@perry.com';
 
 $created = $userModel->createAdmin($email, $password, $login);
 

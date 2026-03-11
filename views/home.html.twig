@@ -7,6 +7,20 @@
     <link rel="stylesheet" href="/CookBook/public/css/style.css?v=4">
 </head>
 <body>
+<button type="button" class="nav-back-button" data-nav-back aria-label="Retour" title="Retour">←</button>
+<script>
+(function () {
+    var btn = document.querySelector('[data-nav-back]');
+    if (!btn) { return; }
+    if (window.history.length <= 1) {
+        btn.style.display = 'none';
+        return;
+    }
+    btn.addEventListener('click', function () {
+        window.history.back();
+    });
+})();
+</script>
 <header>
     <div>
         <strong>CookBook</strong>
@@ -18,7 +32,7 @@
             <a href="/CookBook/messages">
                 Messages
                 {% if unreadMessagesCount > 0 %}
-                    <span class="badge" style="background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.8rem; vertical-align: top;">{{ unreadMessagesCount }}</span>
+                    <span class="badge" style="background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.8rem; vertical-align: top;">{{ unreadMessagesCount|escape }}</span>
                 {% endif %}
             </a>
             <a href="/CookBook/recipes/create">Créer une recette</a>
@@ -26,7 +40,7 @@
                 <a href="/CookBook/admin">Administration</a>
             {% endif %}
             <a href="/CookBook/logout">Déconnexion</a>
-            <span class="user-badge">{{ currentUser }}</span>
+            <span class="user-badge">{{ currentUser|escape }}</span>
         {% else %}
             <a href="/CookBook/signin">Connexion</a>
             <a href="/CookBook/signup">Inscription</a>
@@ -37,7 +51,7 @@
     <h1>Les dernières recettes</h1>
 
     <form method="get" class="search-bar">
-        <input type="text" name="q" placeholder="Rechercher par titre ou ingrédient" value="{{ query|default('') }}">
+        <input type="text" name="q" placeholder="Rechercher par titre ou ingrédient" value="{{ query|default('')|escape }}">
         <button type="submit">Rechercher</button>
     </form>
 
@@ -46,19 +60,19 @@
             {% for recipe in recipes %}
                 <article class="card">
                     {% if recipe.image_path %}
-                        <img src="{{ recipe.image_path }}" alt="Photo de {{ recipe.title }}">
+                        <img src="{{ recipe.image_path|escape }}" alt="Photo de {{ recipe.title|escape }}">
                     {% endif %}
                     <div class="card-body">
-                        <h2 class="card-title">{{ recipe.title }}</h2>
+                        <h2 class="card-title">{{ recipe.title|escape }}</h2>
                         <div class="card-meta">
                             {% if recipe.category_name %}
-                                <span>{{ recipe.category_name }} • </span>
+                                <span>{{ recipe.category_name|escape }} • </span>
                             {% endif %}
                             {% if recipe.author_name %}
-                                <span>par {{ recipe.author_name }}</span>
+                                <span>par {{ recipe.author_name|escape }}</span>
                             {% endif %}
                         </div>
-                        <p>{{ recipe.description|default('')|slice(0, 120) }}{% if recipe.description and recipe.description|length > 120 %}...{% endif %}</p>
+                        <p>{{ recipe.description|default('')|slice(0, 120)|escape }}{% if recipe.description and recipe.description|length > 120 %}...{% endif %}</p>
                         
                         {% if recipe.comments|length > 0 %}
                             <div class="comments-preview" style="margin-top: 1rem; padding-top: 0.5rem; border-top: 1px solid #eee; font-size: 0.9em;">
@@ -66,12 +80,12 @@
                                 <ul style="list-style: none; padding: 0; margin: 0.5rem 0 0;">
                                     {% for comment in recipe.comments|slice(0, 2) %}
                                         <li style="margin-bottom: 0.5rem;">
-                                            <span style="font-weight: bold; color: #666;">{{ comment.author_name }}:</span>
-                                            {{ comment.content|slice(0, 50) }}{% if comment.content|length > 50 %}...{% endif %}
+                                            <span style="font-weight: bold; color: #666;">{{ comment.author_name|escape }}:</span>
+                                            {{ comment.content|slice(0, 50)|escape }}{% if comment.content|length > 50 %}...{% endif %}
                                         </li>
                                     {% endfor %}
                                     {% if recipe.comments|length > 2 %}
-                                        <li><em style="color: #888;">+ {{ recipe.comments|length - 2 }} autres commentaires</em></li>
+                                        <li><em style="color: #888;">+ {{ (recipe.comments|length - 2)|escape }} autres commentaires</em></li>
                                     {% endif %}
                                 </ul>
                             </div>

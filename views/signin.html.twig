@@ -7,19 +7,33 @@
     <link rel="stylesheet" href="/CookBook/public/css/style.css?v=4">
 </head>
 <body>
+<button type="button" class="nav-back-button" data-nav-back aria-label="Retour" title="Retour">←</button>
+<script>
+(function () {
+    var btn = document.querySelector('[data-nav-back]');
+    if (!btn) { return; }
+    if (window.history.length <= 1) {
+        btn.style.display = 'none';
+        return;
+    }
+    btn.addEventListener('click', function () {
+        window.history.back();
+    });
+})();
+</script>
 <div class="auth-page">
     <div class="auth-card">
         <h1>Connexion</h1>
         <p class="auth-subtitle">Connectez-vous pour gérer vos recettes.</p>
 
         {% if error is defined %}
-            <div class="error" style="color: red; margin-bottom: 1rem;">{{ error }}</div>
+            <div class="error" style="color: red; margin-bottom: 1rem;">{{ error|escape }}</div>
         {% endif %}
 
         <form method="POST" action="/CookBook/signin">
             <div>
                 <label for="mail">Votre email</label>
-                <input placeholder="nom@exemple.com" id="mail" name="mail" type="email" value="{{ old_email|default('') }}" required>
+                <input placeholder="nom@exemple.com" id="mail" name="mail" type="email" value="{{ old_email|default('')|escape }}" required>
             </div>
 
             <div>
