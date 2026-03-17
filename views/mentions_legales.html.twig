@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mentions légales - CookBook</title>
-    <link rel="stylesheet" href="/CookBook/public/css/style.css?v=5">
+    <link rel="stylesheet" href="/public/css/style.css?v=5">
 </head>
 <body>
 <header>
@@ -12,24 +12,24 @@
         <strong>CookBook</strong>
     </div>
     <nav>
-        <a href="/CookBook/">Accueil</a>
+        <a href="/">Accueil</a>
         {% if currentUser %}
-            <a href="/CookBook/my-recipes">Mes recettes</a>
-            <a href="/CookBook/messages">
+            <a href="/my-recipes">Mes recettes</a>
+            <a href="/messages">
                 Messages
                 {% if unreadMessagesCount > 0 %}
                     <span class="badge" style="background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.8rem; vertical-align: top;">{{ unreadMessagesCount|escape }}</span>
                 {% endif %}
             </a>
-            <a href="/CookBook/recipes/create">Créer une recette</a>
+            <a href="/recipes/create">Créer une recette</a>
             {% if isAdmin %}
-                <a href="/CookBook/admin">Administration</a>
+                <a href="/admin">Administration</a>
             {% endif %}
-            <a href="/CookBook/logout">Déconnexion</a>
+            <a href="/logout">Déconnexion</a>
             <span class="user-badge">{{ currentUser|escape }}</span>
         {% else %}
-            <a href="/CookBook/signin">Connexion</a>
-            <a href="/CookBook/signup">Inscription</a>
+            <a href="/signin">Connexion</a>
+            <a href="/signup">Inscription</a>
         {% endif %}
     </nav>
 </header>
@@ -159,7 +159,7 @@
             <span>© {{ "now"|date("Y") }} CookBook. Tous droits réservés.</span>
         </div>
         <nav class="site-footer__nav" aria-label="Pied de page">
-            <a href="/CookBook/mentions-legales" class="active">Mentions légales</a>
+            <a href="/mentions-legales" class="active">Mentions légales</a>
         </nav>
     </div>
 </footer>

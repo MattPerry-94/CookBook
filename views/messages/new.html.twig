@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nouvelle conversation - CookBook</title>
-    <link rel="stylesheet" href="/CookBook/public/css/style.css">
+    <link rel="stylesheet" href="/public/css/style.css">
 </head>
 <body>
 <button type="button" class="nav-back-button" data-nav-back aria-label="Retour" title="Retour">←</button>
@@ -26,30 +26,30 @@
         <strong>CookBook</strong>
     </div>
     <nav>
-        <a href="/CookBook/">Accueil</a>
+        <a href="/">Accueil</a>
         {% if currentUser %}
-            <a href="/CookBook/my-recipes">Mes recettes</a>
-            <a href="/CookBook/messages" class="active">
+            <a href="/my-recipes">Mes recettes</a>
+            <a href="/messages" class="active">
                 Messages
                 {% if unreadMessagesCount > 0 %}
                     <span class="badge" style="background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.8rem; vertical-align: top;">{{ unreadMessagesCount|escape }}</span>
                 {% endif %}
             </a>
-            <a href="/CookBook/recipes/create">Créer une recette</a>
+            <a href="/recipes/create">Créer une recette</a>
             {% if isAdmin %}
-                <a href="/CookBook/admin">Administration</a>
+                <a href="/admin">Administration</a>
             {% endif %}
-            <a href="/CookBook/logout">Déconnexion</a>
+            <a href="/logout">Déconnexion</a>
             <span class="user-badge">{{ currentUser|escape }}</span>
         {% else %}
-            <a href="/CookBook/signin">Connexion</a>
+            <a href="/signin">Connexion</a>
         {% endif %}
     </nav>
 </header>
 
 <main>
     <div style="margin-bottom: 1rem;">
-        <a href="/CookBook/messages">&larr; Retour aux conversations</a>
+        <a href="/messages">&larr; Retour aux conversations</a>
     </div>
 
     <h1>Démarrer une conversation</h1>
@@ -61,7 +61,7 @@
                 <div class="card" style="padding: 1rem; display: flex; flex-direction: column; gap: 0.5rem;">
                     <h3>{{ user.name|default('Utilisateur sans nom')|escape }}</h3>
                     <small>{{ user.email|escape }}</small>
-                    <a href="/CookBook/messages/{{ user.id }}" class="button" style="text-align: center; background: #ff7043; color: white; padding: 0.5rem; border-radius: 4px; text-decoration: none; margin-top: auto;">Envoyer un message</a>
+                    <a href="/messages/{{ user.id }}" class="button" style="text-align: center; background: #ff7043; color: white; padding: 0.5rem; border-radius: 4px; text-decoration: none; margin-top: auto;">Envoyer un message</a>
                 </div>
             {% endfor %}
         </div>
@@ -76,7 +76,7 @@
             <span>© {{ "now"|date("Y") }} CookBook. Tous droits réservés.</span>
         </div>
         <nav class="site-footer__nav" aria-label="Pied de page">
-            <a href="/CookBook/mentions-legales">Mentions légales</a>
+            <a href="/mentions-legales">Mentions légales</a>
         </nav>
     </div>
 </footer>

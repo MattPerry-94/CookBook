@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% if mode == 'edit' %}Modifier{% else %}Créer{% endif %} une recette - CookBook</title>
-    <link rel="stylesheet" href="/CookBook/public/css/style.css?v=5">
+    <link rel="stylesheet" href="/public/css/style.css?v=5">
 </head>
 <body>
 <button type="button" class="nav-back-button" data-nav-back aria-label="Retour" title="Retour">←</button>
@@ -26,13 +26,13 @@
         <strong>CookBook</strong>
     </div>
     <nav>
-        <a href="/CookBook/">Accueil</a>
+        <a href="/">Accueil</a>
         {% if currentUser %}
-            <a href="/CookBook/my-recipes">Mes recettes</a>
+            <a href="/my-recipes">Mes recettes</a>
             {% if isAdmin %}
-                <a href="/CookBook/admin">Administration</a>
+                <a href="/admin">Administration</a>
             {% endif %}
-            <a href="/CookBook/logout">Déconnexion</a>
+            <a href="/logout">Déconnexion</a>
             <span class="user-badge">{{ currentUser|escape }}</span>
         {% endif %}
     </nav>
@@ -48,7 +48,7 @@
     {% if mode == 'edit' %}
         <form method="post" enctype="multipart/form-data">
     {% else %}
-        <form method="post" action="/CookBook/recipes/create" enctype="multipart/form-data">
+        <form method="post" action="/recipes/create" enctype="multipart/form-data">
     {% endif %}
         <div>
             <label for="title">Titre de la recette *</label>
@@ -228,7 +228,7 @@
             <span>© {{ "now"|date("Y") }} CookBook. Tous droits réservés.</span>
         </div>
         <nav class="site-footer__nav" aria-label="Pied de page">
-            <a href="/CookBook/mentions-legales">Mentions légales</a>
+            <a href="/mentions-legales">Mentions légales</a>
         </nav>
     </div>
 </footer>

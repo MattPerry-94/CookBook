@@ -54,7 +54,7 @@ $twig->addGlobal('isAdmin', (!empty($_SESSION['role']) && $_SESSION['role'] === 
 $twig->addGlobal('unreadMessagesCount', $unreadCount);
 
 $router = new AltoRouter();
-$router->setBasePath('/CookBook');
+$router->setBasePath('');
 
 // map routes
 

@@ -1,3 +1,13 @@
-RewriteEngine on
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule . index.php [L]
+Options -Indexes
+DirectoryIndex index.html index.php
+
+RewriteEngine On
+
+RewriteRule ^(\.git|app|views|vendor|tools|TestUnitaire|UML_php)(/|$) - [F,L]
+RewriteRule ^(\.env|composer\.json|composer\.lock|database\.sql)$ - [F,L]
+
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+RewriteRule ^ index.php [L]

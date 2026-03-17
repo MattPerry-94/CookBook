@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ recipe.title|escape }} - CookBook</title>
-    <link rel="stylesheet" href="/CookBook/public/css/style.css?v=5">
+    <link rel="stylesheet" href="/public/css/style.css?v=5">
 </head>
 <body>
 <button type="button" class="nav-back-button" data-nav-back aria-label="Retour" title="Retour">←</button>
@@ -26,23 +26,23 @@
         <strong>CookBook</strong>
     </div>
     <nav>
-        <a href="/CookBook/">Accueil</a>
+        <a href="/">Accueil</a>
         {% if currentUser %}
-            <a href="/CookBook/my-recipes">Mes recettes</a>
-            <a href="/CookBook/messages">
+            <a href="/my-recipes">Mes recettes</a>
+            <a href="/messages">
                 Messages
                 {% if unreadMessagesCount > 0 %}
                     <span class="badge" style="background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.8rem; vertical-align: top;">{{ unreadMessagesCount|escape }}</span>
                 {% endif %}
             </a>
-            <a href="/CookBook/recipes/create">Créer une recette</a>
+            <a href="/recipes/create">Créer une recette</a>
             {% if isAdmin %}
-                <a href="/CookBook/admin">Administration</a>
+                <a href="/admin">Administration</a>
             {% endif %}
-            <a href="/CookBook/logout">Déconnexion</a>
+            <a href="/logout">Déconnexion</a>
             <span class="user-badge">{{ currentUser|escape }}</span>
         {% else %}
-            <a href="/CookBook/signin">Connexion</a>
+            <a href="/signin">Connexion</a>
         {% endif %}
     </nav>
 </header>
@@ -98,7 +98,7 @@
             <h2>Commentaires ({{ comments|length|escape }})</h2>
 
             {% if currentUser %}
-                <form action="/CookBook/recipes/{{ recipe.id }}/comment" method="post" class="comment-form">
+                <form action="/recipes/{{ recipe.id }}/comment" method="post" class="comment-form">
                     <div style="margin-bottom: 1rem;">
                         <textarea name="content" placeholder="Ajouter un commentaire..." required style="width: 100%; min-height: 80px; padding: 0.5rem;"></textarea>
                     </div>
@@ -106,7 +106,7 @@
                 </form>
             {% else %}
                 <p>
-                    <a href="/CookBook/signin">Connectez-vous</a> pour ajouter un commentaire.
+                    <a href="/signin">Connectez-vous</a> pour ajouter un commentaire.
                 </p>
             {% endif %}
 
@@ -119,7 +119,7 @@
                                 <span> • {{ comment.created_at|date('d/m/Y H:i') }}</span>
                             </div>
                             {% if isAdmin %}
-                                <form action="/CookBook/admin/comments/{{ comment.id }}/delete" method="post" style="display:inline;" onsubmit="return confirm('Supprimer ce commentaire ?');">
+                                <form action="/admin/comments/{{ comment.id }}/delete" method="post" style="display:inline;" onsubmit="return confirm('Supprimer ce commentaire ?');">
                                     <button type="submit" style="background: none; border: none; color: red; cursor: pointer; padding: 0; font-size: 0.9rem;">Supprimer</button>
                                 </form>
                             {% endif %}
@@ -142,7 +142,7 @@
             <span>© {{ "now"|date("Y") }} CookBook. Tous droits réservés.</span>
         </div>
         <nav class="site-footer__nav" aria-label="Pied de page">
-            <a href="/CookBook/mentions-legales">Mentions légales</a>
+            <a href="/mentions-legales">Mentions légales</a>
         </nav>
     </div>
 </footer>

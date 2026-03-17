@@ -33,7 +33,7 @@ class MessageController extends Controller
     private function ensureAuth(): void
     {
         if (empty($_SESSION['id_user'])) {
-            header('Location: https://cookbook.fm-tech.fr/CookBook/signin');
+            header('Location: https://cookbook.fm-tech.fr/signin');
             if (PHP_SAPI !== 'cli') {
                 exit;
             }
@@ -87,7 +87,7 @@ class MessageController extends Controller
         $currentUserId = (int) $_SESSION['id_user'];
 
         if ($currentUserId === $otherUserId) {
-            header('Location: https://cookbook.fm-tech.fr/CookBook/messages');
+            header('Location: https://cookbook.fm-tech.fr/messages');
             if (PHP_SAPI !== 'cli') {
                 exit;
             }
@@ -96,7 +96,7 @@ class MessageController extends Controller
 
         $otherUser = $this->userModel->findById($otherUserId);
         if (!$otherUser) {
-            header('Location: https://cookbook.fm-tech.fr/CookBook/messages');
+            header('Location: https://cookbook.fm-tech.fr/messages');
             if (PHP_SAPI !== 'cli') {
                 exit;
             }
@@ -130,7 +130,7 @@ class MessageController extends Controller
             $this->messageModel->create($currentUserId, $receiverId, $content);
         }
 
-        header('Location: https://cookbook.fm-tech.fr/CookBook/messages/' . $receiverId);
+        header('Location: https://cookbook.fm-tech.fr/messages/' . $receiverId);
         if (PHP_SAPI !== 'cli') {
             exit;
         }
@@ -149,7 +149,7 @@ class MessageController extends Controller
         
         $this->messageModel->deleteConversation($currentUserId, $contactId);
         
-        header('Location: https://cookbook.fm-tech.fr/CookBook/messages');
+        header('Location: https://cookbook.fm-tech.fr/messages');
         if (PHP_SAPI !== 'cli') {
             exit;
         }

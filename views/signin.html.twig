@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion - CookBook</title>
-    <link rel="stylesheet" href="/CookBook/public/css/style.css?v=4">
+    <link rel="stylesheet" href="/public/css/style.css?v=4">
 </head>
 <body>
 <button type="button" class="nav-back-button" data-nav-back aria-label="Retour" title="Retour">←</button>
@@ -30,7 +30,7 @@
             <div class="error" style="color: red; margin-bottom: 1rem;">{{ error|escape }}</div>
         {% endif %}
 
-        <form method="POST" action="/CookBook/signin">
+        <form method="POST" action="/signin">
             <div>
                 <label for="mail">Votre email</label>
                 <input placeholder="nom@exemple.com" id="mail" name="mail" type="email" value="{{ old_email|default('')|escape }}" required>
@@ -45,7 +45,7 @@
                 <button type="submit">Se connecter</button>
                 <p class="auth-link">
                     Pas encore de compte ?
-                    <a href="/CookBook/signup">Inscrivez-vous</a>
+                    <a href="/signup">Inscrivez-vous</a>
                 </p>
             </div>
         </form>
@@ -58,7 +58,7 @@
             <span>© {{ "now"|date("Y") }} CookBook. Tous droits réservés.</span>
         </div>
         <nav class="site-footer__nav" aria-label="Pied de page">
-            <a href="/CookBook/mentions-legales">Mentions légales</a>
+            <a href="/mentions-legales">Mentions légales</a>
         </nav>
     </div>
 </footer>

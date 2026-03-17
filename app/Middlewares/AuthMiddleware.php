@@ -19,7 +19,7 @@ final class AuthMiddleware{
 
         if (empty($_SESSION["user"]))
         {
-            header('Location: https://cookbook.fm-tech.fr/CookBook/');
+            header('Location: https://cookbook.fm-tech.fr/');
             if (PHP_SAPI !== 'cli') {
                 exit;
             }

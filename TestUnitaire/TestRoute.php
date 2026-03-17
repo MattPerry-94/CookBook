@@ -12,20 +12,20 @@ class TestRoute extends TestCase
     {
         // Arrange
         $router = new AltoRouter();
-        $router->setBasePath('/CookBook');
+        $router->setBasePath('');
         
         // On mappe une route de test pour être sûr de l'environnement
         $router->map('GET', '/', function() { return 'home'; }, 'home');
 
         // Act
-        // Simulation d'une requête GET sur /CookBook/
+        // Simulation d'une requête GET sur /
         // AltoRouter utilise $_SERVER['REQUEST_URI'] par défaut, mais match() prend aussi une URL en paramètre.
         // Attention : AltoRouter::match($requestUrl) compare avec les routes définies.
         // Si setBasePath est utilisé, il faut que l'URL passée à match() inclue ou non le base path selon l'implémentation.
         // Après vérification d'AltoRouter : match($requestUrl) doit contenir l'URL complète relative au serveur.
-        // Si on mappe '/', et basepath '/CookBook', l'URL attendue est '/CookBook/'
+        // Si on mappe '/', et basepath vide, l'URL attendue est '/'
         
-        $match = $router->match('/CookBook/', 'GET');
+        $match = $router->match('/', 'GET');
 
         // Assert
         $this->assertIsArray($match, "La route '/' devrait être trouvée");
@@ -38,13 +38,13 @@ class TestRoute extends TestCase
     {
         // Arrange
         $router = new AltoRouter();
-        $router->setBasePath('/CookBook');
+        $router->setBasePath('');
         
         $router->map('GET', '/', function() { return 'home'; }, 'home');
 
         // Act
         // Simulation d'une requête sur une URL qui n'existe pas
-        $match = $router->match('/CookBook/page-qui-n-existe-pas-404', 'GET');
+        $match = $router->match('/page-qui-n-existe-pas-404', 'GET');
 
         // Assert
         $this->assertFalse($match, "Une route inexistante devrait renvoyer false");

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administration des utilisateurs - CookBook</title>
-    <link rel="stylesheet" href="/CookBook/public/css/style.css?v=4">
+    <link rel="stylesheet" href="/public/css/style.css?v=4">
 </head>
 <body>
 <button type="button" class="nav-back-button" data-nav-back aria-label="Retour" title="Retour">←</button>
@@ -26,17 +26,17 @@
         <strong>CookBook - Admin</strong>
     </div>
     <nav>
-        <a href="/CookBook/">Accueil</a>
-        <a href="/CookBook/messages">
+        <a href="/">Accueil</a>
+        <a href="/messages">
             Messages
             {% if unreadMessagesCount > 0 %}
                 <span class="badge" style="background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.8rem; vertical-align: top;">{{ unreadMessagesCount|escape }}</span>
             {% endif %}
         </a>
         {% if isAdmin %}
-            <a href="/CookBook/admin">Administration</a>
+            <a href="/admin">Administration</a>
         {% endif %}
-        <a href="/CookBook/logout">Déconnexion</a>
+        <a href="/logout">Déconnexion</a>
         {% if currentUser %}
             <span class="user-badge">{{ currentUser|escape }}</span>
         {% endif %}
@@ -58,7 +58,7 @@
             <li>Recettes totales : {{ recipeCount }}</li>
         </ul>
         <p>
-            <a href="/CookBook/admin/recipes">Voir toutes les recettes</a>
+            <a href="/admin/recipes">Voir toutes les recettes</a>
         </p>
     </section>
 
@@ -85,9 +85,9 @@
                     <td>{{ user.active is defined and user.active == 1 ? 'Oui' : 'Non' }}</td>
                     <td>{{ user.created_at|date('d/m/Y H:i') }}</td>
                     <td class="actions">
-                        <a href="/CookBook/admin/users/{{ user.id }}/edit">Modifier</a>
+                        <a href="/admin/users/{{ user.id }}/edit">Modifier</a>
                         <form method="post"
-                              action="/CookBook/admin/users/{{ user.id }}/delete"
+                              action="/admin/users/{{ user.id }}/delete"
                               style="display:inline"
                               onsubmit="return confirm('Supprimer cet utilisateur ?');">
                             <button type="submit" class="btn-link">Supprimer</button>
@@ -108,7 +108,7 @@
             <span>© {{ "now"|date("Y") }} CookBook. Tous droits réservés.</span>
         </div>
         <nav class="site-footer__nav" aria-label="Pied de page">
-            <a href="/CookBook/mentions-legales">Mentions légales</a>
+            <a href="/mentions-legales">Mentions légales</a>
         </nav>
     </div>
 </footer>
