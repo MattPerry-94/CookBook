@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentions légales - CookBook</title>
+    <link rel="stylesheet" href="/CookBook/public/css/style.css?v=5">
+</head>
+<body>
+<header>
+    <div>
+        <strong>CookBook</strong>
+    </div>
+    <nav>
+        <a href="/CookBook/">Accueil</a>
+        {% if currentUser %}
+            <a href="/CookBook/my-recipes">Mes recettes</a>
+            <a href="/CookBook/messages">
+                Messages
+                {% if unreadMessagesCount > 0 %}
+                    <span class="badge" style="background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.8rem; vertical-align: top;">{{ unreadMessagesCount|escape }}</span>
+                {% endif %}
+            </a>
+            <a href="/CookBook/recipes/create">Créer une recette</a>
+            {% if isAdmin %}
+                <a href="/CookBook/admin">Administration</a>
+            {% endif %}
+            <a href="/CookBook/logout">Déconnexion</a>
+            <span class="user-badge">{{ currentUser|escape }}</span>
+        {% else %}
+            <a href="/CookBook/signin">Connexion</a>
+            <a href="/CookBook/signup">Inscription</a>
+        {% endif %}
+    </nav>
+</header>
+
+<main class="legal-page" id="mentions-legales">
+    <h1>Mentions légales</h1>
+
+    <section class="legal-section" id="editeur">
+        <h2>Éditeur du site</h2>
+        <p>
+            Le présent site « CookBook » est édité par :
+        </p>
+        <ul class="legal-list">
+            <li><strong>Nom / Raison sociale</strong> : FM Tech</li>
+            <li><strong>Adresse</strong> : [Adresse complète], [Code postal] [Ville], [Pays]</li>
+            <li><strong>Email</strong> : [contact@domaine.fr]</li>
+            <li><strong>Téléphone</strong> : [Numéro de téléphone]</li>
+            <li><strong>Responsable de publication</strong> : [Nom du responsable]</li>
+        </ul>
+    </section>
+
+    <section class="legal-section" id="hebergeur">
+        <h2>Hébergeur</h2>
+        <p>
+            Le site est hébergé par :
+        </p>
+        <ul class="legal-list">
+            <li><strong>Nom</strong> : [Nom de l’hébergeur]</li>
+            <li><strong>Adresse</strong> : [Adresse complète], [Code postal] [Ville], [Pays]</li>
+            <li><strong>Téléphone</strong> : [Numéro de téléphone]</li>
+            <li><strong>Site web</strong> : [URL de l’hébergeur]</li>
+        </ul>
+    </section>
+
+    <section class="legal-section" id="conditions-utilisation">
+        <h2>Conditions d’utilisation</h2>
+        <p>
+            L’accès et l’utilisation du site impliquent l’acceptation pleine et entière des présentes conditions.
+            L’utilisateur s’engage à utiliser le site de manière loyale et conformément aux lois et règlements en vigueur.
+        </p>
+        <p>
+            Le site peut être interrompu pour maintenance, mise à jour ou pour toute autre raison technique. CookBook
+            s’efforcera de limiter la durée des interruptions.
+        </p>
+    </section>
+
+    <section class="legal-section" id="confidentialite">
+        <h2>Politique de confidentialité (RGPD)</h2>
+        <p>
+            CookBook collecte et traite des données personnelles dans le respect du Règlement (UE) 2016/679 (RGPD) et de la législation applicable.
+            Les données peuvent inclure notamment : adresse email, pseudo/nom, contenus saisis (recettes, commentaires, messages) et données techniques de connexion.
+        </p>
+
+        <h3>Finalités</h3>
+        <ul class="legal-list">
+            <li>Création et gestion de compte utilisateur</li>
+            <li>Publication et gestion des recettes, commentaires et messages</li>
+            <li>Sécurité, prévention de la fraude et amélioration du service</li>
+        </ul>
+
+        <h3>Base légale</h3>
+        <ul class="legal-list">
+            <li>Exécution du contrat (fourniture du service)</li>
+            <li>Intérêt légitime (sécurité et amélioration)</li>
+            <li>Consentement lorsque requis</li>
+        </ul>
+
+        <h3>Durées de conservation</h3>
+        <p>
+            Les données sont conservées pendant la durée nécessaire aux finalités décrites ci-dessus et, le cas échéant,
+            pour respecter les obligations légales. Les contenus publiés peuvent rester visibles tant que le compte est actif,
+            sauf suppression demandée lorsque cela est possible.
+        </p>
+
+        <h3>Droits des personnes</h3>
+        <p>
+            Conformément au RGPD, vous disposez des droits d’accès, de rectification, d’effacement, d’opposition,
+            de limitation, de portabilité et de retrait du consentement. Pour exercer vos droits, contactez :
+            <strong>[contact@domaine.fr]</strong>.
+        </p>
+
+        <h3>Cookies</h3>
+        <p>
+            Le site peut utiliser des cookies techniques nécessaires à son fonctionnement (ex. session). Aucun cookie non essentiel
+            n’est déposé sans information et, le cas échéant, consentement.
+        </p>
+    </section>
+
+    <section class="legal-section" id="propriete-intellectuelle">
+        <h2>Propriété intellectuelle</h2>
+        <p>
+            L’ensemble des éléments composant le site (textes, graphismes, logos, structure, interface) est protégé par le droit
+            de la propriété intellectuelle. Toute reproduction, représentation, adaptation ou exploitation, totale ou partielle,
+            sans autorisation préalable écrite, est interdite.
+        </p>
+        <p>
+            Les contenus publiés par les utilisateurs (recettes, commentaires, messages) demeurent la responsabilité de leurs auteurs.
+        </p>
+    </section>
+
+    <section class="legal-section" id="responsabilite">
+        <h2>Limitation de responsabilité</h2>
+        <p>
+            CookBook met tout en œuvre pour fournir des informations et un service fiables, mais ne saurait garantir l’absence
+            d’erreurs, d’omissions ou d’indisponibilités. L’utilisateur reconnaît utiliser le site sous sa responsabilité.
+        </p>
+        <p>
+            CookBook ne pourra être tenu responsable des dommages directs ou indirects liés à l’utilisation du site, notamment
+            en cas de perte de données, d’interruption de service, ou de dommages résultant de l’accès à des contenus publiés par des tiers.
+        </p>
+    </section>
+
+    <nav class="legal-toc" aria-label="Sommaire Mentions légales">
+        <a href="#editeur">Éditeur</a>
+        <a href="#hebergeur">Hébergeur</a>
+        <a href="#conditions-utilisation">Conditions</a>
+        <a href="#confidentialite">Confidentialité</a>
+        <a href="#propriete-intellectuelle">Propriété</a>
+        <a href="#responsabilite">Responsabilité</a>
+    </nav>
+</main>
+
+<footer class="site-footer" role="contentinfo">
+    <div class="site-footer__inner">
+        <div class="site-footer__brand">
+            <strong>CookBook</strong>
+            <span>© {{ "now"|date("Y") }} CookBook. Tous droits réservés.</span>
+        </div>
+        <nav class="site-footer__nav" aria-label="Pied de page">
+            <a href="/CookBook/mentions-legales" class="active">Mentions légales</a>
+        </nav>
+    </div>
+</footer>
+</body>
+</html>

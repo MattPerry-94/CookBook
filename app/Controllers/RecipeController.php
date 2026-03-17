@@ -93,14 +93,18 @@ class RecipeController extends Controller
     public function addComment(int $id): void
     {
         if (empty($_SESSION['id_user'])) {
-            header('Location: /CookBook/signin');
-            exit;
+            header('Location: https://cookbook.fm-tech.fr/CookBook/signin');
+            if (PHP_SAPI !== 'cli') {
+                exit;
+            }
         }
 
         $content = trim($_POST['content'] ?? '');
         if ($content === '') {
-            header('Location: /CookBook/recipes/' . $id);
-            exit;
+            header('Location: https://cookbook.fm-tech.fr/CookBook/recipes/' . $id);
+            if (PHP_SAPI !== 'cli') {
+                exit;
+            }
         }
 
         $this->commentModel->create([
@@ -109,7 +113,10 @@ class RecipeController extends Controller
             'content'   => $content,
         ]);
 
-        header('Location: /CookBook/recipes/' . $id);
+        header('Location: https://cookbook.fm-tech.fr/CookBook/recipes/' . $id);
+        if (PHP_SAPI !== 'cli') {
+            exit;
+        }
     }
 
     /**
@@ -120,8 +127,10 @@ class RecipeController extends Controller
     public function myRecipes(): void
     {
         if (empty($_SESSION['id_user'])) {
-            header('Location: /CookBook/signin');
-            exit;
+            header('Location: https://cookbook.fm-tech.fr/CookBook/signin');
+            if (PHP_SAPI !== 'cli') {
+                exit;
+            }
         }
 
         $userId  = (int) $_SESSION['id_user'];
@@ -140,8 +149,10 @@ class RecipeController extends Controller
     public function createForm(): void
     {
         if (empty($_SESSION['id_user'])) {
-            header('Location: /CookBook/signin');
-            exit;
+            header('Location: https://cookbook.fm-tech.fr/CookBook/signin');
+            if (PHP_SAPI !== 'cli') {
+                exit;
+            }
         }
 
         $categories = $this->categoryModel->findAll();
@@ -159,8 +170,10 @@ class RecipeController extends Controller
     public function create(): void
     {
         if (empty($_SESSION['id_user'])) {
-            header('Location: /CookBook/signin');
-            exit;
+            header('Location: https://cookbook.fm-tech.fr/CookBook/signin');
+            if (PHP_SAPI !== 'cli') {
+                exit;
+            }
         }
 
         $title       = trim($_POST['title'] ?? '');
@@ -210,7 +223,10 @@ class RecipeController extends Controller
         ];
 
         $this->recipeModel->create($data);
-        header('Location: /CookBook/my-recipes');
+        header('Location: https://cookbook.fm-tech.fr/CookBook/my-recipes');
+        if (PHP_SAPI !== 'cli') {
+            exit;
+        }
     }
 
     /**
@@ -222,8 +238,10 @@ class RecipeController extends Controller
     public function editForm(int $id): void
     {
         if (empty($_SESSION['id_user'])) {
-            header('Location: /CookBook/signin');
-            exit;
+            header('Location: https://cookbook.fm-tech.fr/CookBook/signin');
+            if (PHP_SAPI !== 'cli') {
+                exit;
+            }
         }
 
         $userId = (int) $_SESSION['id_user'];
@@ -251,8 +269,10 @@ class RecipeController extends Controller
     public function edit(int $id): void
     {
         if (empty($_SESSION['id_user'])) {
-            header('Location: /CookBook/signin');
-            exit;
+            header('Location: https://cookbook.fm-tech.fr/CookBook/signin');
+            if (PHP_SAPI !== 'cli') {
+                exit;
+            }
         }
 
         $userId = (int) $_SESSION['id_user'];
@@ -308,7 +328,10 @@ class RecipeController extends Controller
         ];
 
         $this->recipeModel->updateForUser($id, $userId, $data);
-        header('Location: /CookBook/my-recipes');
+        header('Location: https://cookbook.fm-tech.fr/CookBook/my-recipes');
+        if (PHP_SAPI !== 'cli') {
+            exit;
+        }
     }
 
     /**
@@ -320,8 +343,10 @@ class RecipeController extends Controller
     public function delete(int $id): void
     {
         if (empty($_SESSION['id_user'])) {
-            header('Location: /CookBook/signin');
-            exit;
+            header('Location: https://cookbook.fm-tech.fr/CookBook/signin');
+            if (PHP_SAPI !== 'cli') {
+                exit;
+            }
         }
 
         $userId = (int) $_SESSION['id_user'];
@@ -329,7 +354,10 @@ class RecipeController extends Controller
         if ($recipe) {
             $this->recipeModel->deleteById($id);
         }
-        header('Location: /CookBook/my-recipes');
+        header('Location: https://cookbook.fm-tech.fr/CookBook/my-recipes');
+        if (PHP_SAPI !== 'cli') {
+            exit;
+        }
     }
 
     /**
@@ -374,7 +402,6 @@ class RecipeController extends Controller
             return $currentPath;
         }
 
-        // Chemin accessible depuis le navigateur (en supposant /CookBook/public comme racine)
         return '/CookBook/public/uploads/' . $fileName;
     }
 }

@@ -1,7 +1,7 @@
 <?php
 namespace App\Controllers;
+
 use Twig\Environment;
-use App\Middlewares\JwtService;
 use App\Models\UserModel;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -82,10 +82,16 @@ final class AuthController extends Controller {
             $_SESSION["role"]    = 'user';
             
             // Après inscription, l'utilisateur reste connecté et va sur la page d'accueil
-            header("location: /CookBook/");
+            header('Location: https://cookbook.fm-tech.fr/CookBook/');
+            if (PHP_SAPI !== 'cli') {
+                exit;
+            }
         }
         else{
-            header("location: /CookBook/signup");
+            header('Location: https://cookbook.fm-tech.fr/CookBook/signup');
+            if (PHP_SAPI !== 'cli') {
+                exit;
+            }
         }
 
     }
@@ -145,9 +151,15 @@ final class AuthController extends Controller {
             // Si c'est un admin, on le redirige vers le tableau de bord admin,
             // sinon vers la page d'accueil classique.
             if (!empty($result['role']) && $result['role'] === 'admin') {
-                header("Location: /CookBook/admin");
+                header('Location: https://cookbook.fm-tech.fr/CookBook/admin');
+                if (PHP_SAPI !== 'cli') {
+                    exit;
+                }
             } else {
-                header("Location: /CookBook/");
+                header('Location: https://cookbook.fm-tech.fr/CookBook/');
+                if (PHP_SAPI !== 'cli') {
+                    exit;
+                }
             }
         }
     }
@@ -169,7 +181,10 @@ final class AuthController extends Controller {
      */
     public function logout(){
         session_destroy();
-        header("Location: /CookBook/");
+        header('Location: https://cookbook.fm-tech.fr/CookBook/');
+        if (PHP_SAPI !== 'cli') {
+            exit;
+        }
     }
 
 

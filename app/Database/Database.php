@@ -22,9 +22,9 @@ class Database{
      */
     public static function getInstance(): PDO {
         if (self::$instance === null) {
-            $dsn = 'mysql:host=localhost;dbname=cook_book;charset=utf8mb4';
-            $user = 'root';
-            $pass = '';
+            $dsn = 'mysql:host=localhost;dbname=matthieup_db2;charset=utf8mb4';
+            $user = 'matthieup_db2';
+            $pass = 'HockPM119774';
 
             try {
                 self::$instance = new PDO($dsn, $user, $pass, [

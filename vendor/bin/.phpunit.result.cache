@@ -1,0 +1,1 @@
+{"version":2,"defects":{"App\\Tests\\TestUser::testRegisterSuccess":8},"times":{"App\\Tests\\TestUser::testRegisterSuccess":0.117,"App\\Tests\\TestUser::testRegisterFailureEmailExists":0.033,"TestRoute::testRouteExists":0.004,"TestRoute::testRouteNotFound":0.001,"TestRecipe::testCreateRecipeSuccess":0.001,"TestRecipe::testCreateRecipeFailure":0}}

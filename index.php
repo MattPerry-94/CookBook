@@ -23,7 +23,6 @@ use App\Models\MessageModel;
 use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
 
-
 $loader = new FilesystemLoader(__DIR__ . '/views');
 
 // Pas de require manuels pour Twig ici
@@ -55,7 +54,7 @@ $twig->addGlobal('isAdmin', (!empty($_SESSION['role']) && $_SESSION['role'] === 
 $twig->addGlobal('unreadMessagesCount', $unreadCount);
 
 $router = new AltoRouter();
-$router->setBasePath("/CookBook");
+$router->setBasePath('/CookBook');
 
 // map routes
 
@@ -63,6 +62,10 @@ $router->map('GET', '/', function () use ($pdo,$twig) {
     // Page d'accueil : liste publique des recettes
     $recipeController = new RecipeController($pdo, $twig);
     $recipeController->list();
+});
+
+$router->map('GET', '/mentions-legales', function () use ($twig) {
+    echo $twig->render('mentions_legales.html.twig');
 });
 
 $router->map('GET', '/signup', function () use ($pdo,$twig) {

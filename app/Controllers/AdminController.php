@@ -1,7 +1,6 @@
 <?php
 namespace App\Controllers;
 use Twig\Environment;
-use App\Middlewares\JwtService;
 use App\Models\UserModel;
 use App\Models\RecipeModel;
 use App\Models\CommentModel;
@@ -30,16 +29,20 @@ final class AdminController extends Controller{
     private function ensureAdmin(): void
     {
         if (empty($_SESSION['id_user'])) {
-            header('Location: /CookBook/signin');
-            exit;
+            header('Location: https://cookbook.fm-tech.fr/CookBook/signin');
+            if (PHP_SAPI !== 'cli') {
+                exit;
+            }
         }
 
         $userModel = new UserModel($this->pdo);
         $current   = $userModel->findById((int) $_SESSION['id_user']);
 
         if (!$current || $current['role'] !== 'admin') {
-            header('Location: /CookBook');
-            exit;
+            header('Location: https://cookbook.fm-tech.fr/CookBook/');
+            if (PHP_SAPI !== 'cli') {
+                exit;
+            }
         }
     }
 
@@ -102,7 +105,10 @@ final class AdminController extends Controller{
         $user      = $userModel->findById($id);
 
         if (!$user) {
-            header('Location: /CookBook/admin');
+            header('Location: https://cookbook.fm-tech.fr/CookBook/admin');
+            if (PHP_SAPI !== 'cli') {
+                exit;
+            }
             return;
         }
 
@@ -124,7 +130,10 @@ final class AdminController extends Controller{
         $user      = $userModel->findById($id);
 
         if (!$user) {
-            header('Location: /CookBook/admin');
+            header('Location: https://cookbook.fm-tech.fr/CookBook/admin');
+            if (PHP_SAPI !== 'cli') {
+                exit;
+            }
             return;
         }
 
@@ -142,7 +151,10 @@ final class AdminController extends Controller{
         }
 
         $userModel->updateUser($id, $email, $name !== '' ? $name : null, $role, $active);
-        header('Location: /CookBook/admin');
+        header('Location: https://cookbook.fm-tech.fr/CookBook/admin');
+        if (PHP_SAPI !== 'cli') {
+            exit;
+        }
     }
 
     /**
@@ -158,12 +170,18 @@ final class AdminController extends Controller{
 
         // On évite de supprimer son propre compte admin
         if ($id === (int) $_SESSION['id_user']) {
-            header('Location: /CookBook/admin');
+            header('Location: https://cookbook.fm-tech.fr/CookBook/admin');
+            if (PHP_SAPI !== 'cli') {
+                exit;
+            }
             return;
         }
 
         $userModel->deleteById($id);
-        header('Location: /CookBook/admin');
+        header('Location: https://cookbook.fm-tech.fr/CookBook/admin');
+        if (PHP_SAPI !== 'cli') {
+            exit;
+        }
     }
 
     /**
@@ -193,7 +211,10 @@ final class AdminController extends Controller{
         $this->ensureAdmin();
         $recipeModel = new RecipeModel($this->pdo);
         $recipeModel->deleteById($id);
-        header('Location: /CookBook/admin/recipes');
+        header('Location: https://cookbook.fm-tech.fr/CookBook/admin/recipes');
+        if (PHP_SAPI !== 'cli') {
+            exit;
+        }
     }
 
     /**
@@ -214,7 +235,10 @@ final class AdminController extends Controller{
         if (!empty($_SERVER['HTTP_REFERER'])) {
             header('Location: ' . $_SERVER['HTTP_REFERER']);
         } else {
-            header('Location: /CookBook/');
+            header('Location: https://cookbook.fm-tech.fr/CookBook/');
+            if (PHP_SAPI !== 'cli') {
+                exit;
+            }
         }
     }
 
