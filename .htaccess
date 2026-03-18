@@ -3,6 +3,16 @@ DirectoryIndex index.html index.php
 
 RewriteEngine On
 
+RewriteRule ^public/assets/flaticon\.svg$ /public/assets/flaticon.png [R=302,L,NC]
+RewriteRule ^assets/flaticon\.svg$ /assets/flaticon.png [R=302,L,NC]
+
+RewriteCond %{REQUEST_METHOD} =POST
+RewriteRule ^CookBook/(.*)$ /$1 [QSA,L,NC]
+RewriteCond %{REQUEST_METHOD} !=POST
+RewriteRule ^CookBook/?$ / [QSA,R=301,L,NC]
+RewriteCond %{REQUEST_METHOD} !=POST
+RewriteRule ^CookBook/(.*)$ /$1 [QSA,R=301,L,NC]
+
 RewriteRule ^(\.git|app|views|vendor|tools|TestUnitaire|UML_php)(/|$) - [F,L]
 RewriteRule ^(\.env|composer\.json|composer\.lock|database\.sql)$ - [F,L]
 

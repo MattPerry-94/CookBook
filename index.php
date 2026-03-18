@@ -227,7 +227,11 @@ $router->map('POST', '/messages/[i:id]/delete', function ($id) use ($pdo, $twig)
     $messageController->delete($id);
 });
 
-$match = $router->match();
+$requestUrl = $_SERVER['REDIRECT_URL'] ?? ($_SERVER['REQUEST_URI'] ?? '/');
+if (!empty($_SERVER['QUERY_STRING'])) {
+    $requestUrl .= '?' . $_SERVER['QUERY_STRING'];
+}
+$match = $router->match($requestUrl);
 
 
 // call closure or throw 404 status

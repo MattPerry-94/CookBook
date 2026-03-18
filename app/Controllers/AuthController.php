@@ -32,7 +32,7 @@ final class AuthController extends Controller {
      */
     public function register($email, $pwd, $username = null){
 
-        $UserModel = new UserModel($this->pdo,"users");
+        $UserModel = new UserModel($this->pdo);
 
         // Vérification du format de l'email
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -72,7 +72,16 @@ final class AuthController extends Controller {
 
         $hash = password_hash($pwd, PASSWORD_DEFAULT);
         
-        $newUserId = $UserModel->addUser($email, $hash, $username);
+        try {
+            $newUserId = $UserModel->addUser($email, $hash, $username);
+        } catch (\Throwable $e) {
+            $this->render("signup.html.twig", [
+                'error' => "Impossible de créer le compte pour le moment.",
+                'old_email' => $email,
+                'old_username' => $username
+            ]);
+            return;
+        }
         
         if($newUserId > 0){
             session_regenerate_id(true);
@@ -88,10 +97,12 @@ final class AuthController extends Controller {
             }
         }
         else{
-            header('Location: https://cookbook.fm-tech.fr/signup');
-            if (PHP_SAPI !== 'cli') {
-                exit;
-            }
+            $this->render("signup.html.twig", [
+                'error' => "Impossible de créer le compte pour le moment.",
+                'old_email' => $email,
+                'old_username' => $username
+            ]);
+            return;
         }
 
     }
@@ -124,7 +135,7 @@ final class AuthController extends Controller {
      * @return void
      */
     public function login($mail, $pwd){
-        $UserModel = new UserModel($this->pdo, "users");
+        $UserModel = new UserModel($this->pdo);
 
         // Vérification du format de l'email (doit contenir @, etc.)
         if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
