@@ -93,7 +93,8 @@ class RecipeController extends Controller
     public function addComment(int $id): void
     {
         if (empty($_SESSION['id_user'])) {
-            header('Location: https://cookbook.fm-tech.fr/signin');
+            $basePath = defined('APP_BASE_PATH') ? APP_BASE_PATH : '';
+            header('Location: ' . $basePath . '/signin');
             if (PHP_SAPI !== 'cli') {
                 exit;
             }
@@ -101,7 +102,8 @@ class RecipeController extends Controller
 
         $content = trim($_POST['content'] ?? '');
         if ($content === '') {
-            header('Location: https://cookbook.fm-tech.fr/recipes/' . $id);
+            $basePath = defined('APP_BASE_PATH') ? APP_BASE_PATH : '';
+            header('Location: ' . $basePath . '/recipes/' . $id);
             if (PHP_SAPI !== 'cli') {
                 exit;
             }
@@ -113,7 +115,8 @@ class RecipeController extends Controller
             'content'   => $content,
         ]);
 
-        header('Location: https://cookbook.fm-tech.fr/recipes/' . $id);
+        $basePath = defined('APP_BASE_PATH') ? APP_BASE_PATH : '';
+        header('Location: ' . $basePath . '/recipes/' . $id);
         if (PHP_SAPI !== 'cli') {
             exit;
         }
@@ -127,7 +130,8 @@ class RecipeController extends Controller
     public function myRecipes(): void
     {
         if (empty($_SESSION['id_user'])) {
-            header('Location: https://cookbook.fm-tech.fr/signin');
+            $basePath = defined('APP_BASE_PATH') ? APP_BASE_PATH : '';
+            header('Location: ' . $basePath . '/signin');
             if (PHP_SAPI !== 'cli') {
                 exit;
             }
@@ -149,7 +153,8 @@ class RecipeController extends Controller
     public function createForm(): void
     {
         if (empty($_SESSION['id_user'])) {
-            header('Location: https://cookbook.fm-tech.fr/signin');
+            $basePath = defined('APP_BASE_PATH') ? APP_BASE_PATH : '';
+            header('Location: ' . $basePath . '/signin');
             if (PHP_SAPI !== 'cli') {
                 exit;
             }
@@ -170,7 +175,8 @@ class RecipeController extends Controller
     public function create(): void
     {
         if (empty($_SESSION['id_user'])) {
-            header('Location: https://cookbook.fm-tech.fr/signin');
+            $basePath = defined('APP_BASE_PATH') ? APP_BASE_PATH : '';
+            header('Location: ' . $basePath . '/signin');
             if (PHP_SAPI !== 'cli') {
                 exit;
             }
@@ -223,7 +229,8 @@ class RecipeController extends Controller
         ];
 
         $this->recipeModel->create($data);
-        header('Location: https://cookbook.fm-tech.fr/my-recipes');
+        $basePath = defined('APP_BASE_PATH') ? APP_BASE_PATH : '';
+        header('Location: ' . $basePath . '/my-recipes');
         if (PHP_SAPI !== 'cli') {
             exit;
         }
@@ -238,7 +245,8 @@ class RecipeController extends Controller
     public function editForm(int $id): void
     {
         if (empty($_SESSION['id_user'])) {
-            header('Location: https://cookbook.fm-tech.fr/signin');
+            $basePath = defined('APP_BASE_PATH') ? APP_BASE_PATH : '';
+            header('Location: ' . $basePath . '/signin');
             if (PHP_SAPI !== 'cli') {
                 exit;
             }
@@ -269,7 +277,8 @@ class RecipeController extends Controller
     public function edit(int $id): void
     {
         if (empty($_SESSION['id_user'])) {
-            header('Location: https://cookbook.fm-tech.fr/signin');
+            $basePath = defined('APP_BASE_PATH') ? APP_BASE_PATH : '';
+            header('Location: ' . $basePath . '/signin');
             if (PHP_SAPI !== 'cli') {
                 exit;
             }
@@ -328,7 +337,8 @@ class RecipeController extends Controller
         ];
 
         $this->recipeModel->updateForUser($id, $userId, $data);
-        header('Location: https://cookbook.fm-tech.fr/my-recipes');
+        $basePath = defined('APP_BASE_PATH') ? APP_BASE_PATH : '';
+        header('Location: ' . $basePath . '/my-recipes');
         if (PHP_SAPI !== 'cli') {
             exit;
         }
@@ -343,7 +353,8 @@ class RecipeController extends Controller
     public function delete(int $id): void
     {
         if (empty($_SESSION['id_user'])) {
-            header('Location: https://cookbook.fm-tech.fr/signin');
+            $basePath = defined('APP_BASE_PATH') ? APP_BASE_PATH : '';
+            header('Location: ' . $basePath . '/signin');
             if (PHP_SAPI !== 'cli') {
                 exit;
             }
@@ -354,7 +365,8 @@ class RecipeController extends Controller
         if ($recipe) {
             $this->recipeModel->deleteById($id);
         }
-        header('Location: https://cookbook.fm-tech.fr/my-recipes');
+        $basePath = defined('APP_BASE_PATH') ? APP_BASE_PATH : '';
+        header('Location: ' . $basePath . '/my-recipes');
         if (PHP_SAPI !== 'cli') {
             exit;
         }

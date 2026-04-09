@@ -38,6 +38,21 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
 
+$basePath = '';
+if (isset($_SERVER['SCRIPT_NAME'])) {
+    $basePath = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
+    $basePath = rtrim($basePath, '/');
+    if ($basePath === '/') {
+        $basePath = '';
+    }
+    if (str_ends_with($basePath, '/public')) {
+        $basePath = substr($basePath, 0, -7);
+    }
+}
+if (!defined('APP_BASE_PATH')) {
+    define('APP_BASE_PATH', $basePath);
+}
+
 $pdo = Database::getInstance();
 
 // Compter les messages non lus si l'utilisateur est connecté
@@ -52,9 +67,10 @@ $twig->addGlobal('currentUser', $_SESSION['user'] ?? null);
 $twig->addGlobal('currentUserId', $_SESSION['id_user'] ?? null); // Ajout ID utilisateur
 $twig->addGlobal('isAdmin', (!empty($_SESSION['role']) && $_SESSION['role'] === 'admin'));
 $twig->addGlobal('unreadMessagesCount', $unreadCount);
+$twig->addGlobal('basePath', $basePath);
 
 $router = new AltoRouter();
-$router->setBasePath('');
+$router->setBasePath($basePath);
 
 // map routes
 

@@ -22,9 +22,16 @@ class Database{
      */
     public static function getInstance(): PDO {
         if (self::$instance === null) {
-            $dsn = 'mysql:host=localhost;dbname=matthieup_db2;charset=utf8mb4';
-            $user = 'matthieup_db2';
-            $pass = 'HockPM119774';
+            $host = getenv('DB_HOST') ?: '127.0.0.1';
+            $port = getenv('DB_PORT') ?: '';
+            $dbName = getenv('DB_NAME') ?: 'cook_book';
+            $user = getenv('DB_USER') ?: 'root';
+            $pass = getenv('DB_PASS') ?: '';
+            $charset = getenv('DB_CHARSET') ?: 'utf8mb4';
+
+            $dsn = 'mysql:host=' . $host . ';'
+                . ($port !== '' ? ('port=' . $port . ';') : '')
+                . 'dbname=' . $dbName . ';charset=' . $charset;
 
             try {
                 self::$instance = new PDO($dsn, $user, $pass, [

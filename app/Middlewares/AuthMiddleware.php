@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\middlewares;
+namespace App\Middlewares;
 
 final class AuthMiddleware{
 
@@ -19,7 +19,8 @@ final class AuthMiddleware{
 
         if (empty($_SESSION["user"]))
         {
-            header('Location: https://cookbook.fm-tech.fr/');
+            $basePath = defined('APP_BASE_PATH') ? APP_BASE_PATH : '';
+            header('Location: ' . ($basePath !== '' ? $basePath : '') . '/');
             if (PHP_SAPI !== 'cli') {
                 exit;
             }

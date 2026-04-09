@@ -91,7 +91,8 @@ final class AuthController extends Controller {
             $_SESSION["role"]    = 'user';
             
             // Après inscription, l'utilisateur reste connecté et va sur la page d'accueil
-            header('Location: https://cookbook.fm-tech.fr/');
+            $basePath = defined('APP_BASE_PATH') ? APP_BASE_PATH : '';
+            header('Location: ' . $basePath . '/');
             if (PHP_SAPI !== 'cli') {
                 exit;
             }
@@ -162,12 +163,14 @@ final class AuthController extends Controller {
             // Si c'est un admin, on le redirige vers le tableau de bord admin,
             // sinon vers la page d'accueil classique.
             if (!empty($result['role']) && $result['role'] === 'admin') {
-                header('Location: https://cookbook.fm-tech.fr/admin');
+                $basePath = defined('APP_BASE_PATH') ? APP_BASE_PATH : '';
+                header('Location: ' . $basePath . '/admin');
                 if (PHP_SAPI !== 'cli') {
                     exit;
                 }
             } else {
-                header('Location: https://cookbook.fm-tech.fr/');
+                $basePath = defined('APP_BASE_PATH') ? APP_BASE_PATH : '';
+                header('Location: ' . $basePath . '/');
                 if (PHP_SAPI !== 'cli') {
                     exit;
                 }
@@ -192,7 +195,8 @@ final class AuthController extends Controller {
      */
     public function logout(){
         session_destroy();
-        header('Location: https://cookbook.fm-tech.fr/');
+        $basePath = defined('APP_BASE_PATH') ? APP_BASE_PATH : '';
+        header('Location: ' . $basePath . '/');
         if (PHP_SAPI !== 'cli') {
             exit;
         }

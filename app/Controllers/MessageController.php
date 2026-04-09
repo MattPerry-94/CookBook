@@ -33,7 +33,8 @@ class MessageController extends Controller
     private function ensureAuth(): void
     {
         if (empty($_SESSION['id_user'])) {
-            header('Location: https://cookbook.fm-tech.fr/signin');
+            $basePath = defined('APP_BASE_PATH') ? APP_BASE_PATH : '';
+            header('Location: ' . $basePath . '/signin');
             if (PHP_SAPI !== 'cli') {
                 exit;
             }
@@ -87,7 +88,8 @@ class MessageController extends Controller
         $currentUserId = (int) $_SESSION['id_user'];
 
         if ($currentUserId === $otherUserId) {
-            header('Location: https://cookbook.fm-tech.fr/messages');
+            $basePath = defined('APP_BASE_PATH') ? APP_BASE_PATH : '';
+            header('Location: ' . $basePath . '/messages');
             if (PHP_SAPI !== 'cli') {
                 exit;
             }
@@ -96,7 +98,8 @@ class MessageController extends Controller
 
         $otherUser = $this->userModel->findById($otherUserId);
         if (!$otherUser) {
-            header('Location: https://cookbook.fm-tech.fr/messages');
+            $basePath = defined('APP_BASE_PATH') ? APP_BASE_PATH : '';
+            header('Location: ' . $basePath . '/messages');
             if (PHP_SAPI !== 'cli') {
                 exit;
             }
@@ -130,7 +133,8 @@ class MessageController extends Controller
             $this->messageModel->create($currentUserId, $receiverId, $content);
         }
 
-        header('Location: https://cookbook.fm-tech.fr/messages/' . $receiverId);
+        $basePath = defined('APP_BASE_PATH') ? APP_BASE_PATH : '';
+        header('Location: ' . $basePath . '/messages/' . $receiverId);
         if (PHP_SAPI !== 'cli') {
             exit;
         }
@@ -149,7 +153,8 @@ class MessageController extends Controller
         
         $this->messageModel->deleteConversation($currentUserId, $contactId);
         
-        header('Location: https://cookbook.fm-tech.fr/messages');
+        $basePath = defined('APP_BASE_PATH') ? APP_BASE_PATH : '';
+        header('Location: ' . $basePath . '/messages');
         if (PHP_SAPI !== 'cli') {
             exit;
         }
