@@ -219,13 +219,31 @@ $router->map('GET', '/messages', function () use ($pdo, $twig) {
     $messageController->index();
 });
 
+$router->map('GET', '/messages/', function () use ($pdo, $twig) {
+    AuthMiddleware::authSession();
+    $messageController = new MessageController($pdo, $twig);
+    $messageController->index();
+});
+
 $router->map('GET', '/messages/new', function () use ($pdo, $twig) {
     AuthMiddleware::authSession();
     $messageController = new MessageController($pdo, $twig);
     $messageController->newConversation();
 });
 
+$router->map('GET', '/messages/new/', function () use ($pdo, $twig) {
+    AuthMiddleware::authSession();
+    $messageController = new MessageController($pdo, $twig);
+    $messageController->newConversation();
+});
+
 $router->map('GET', '/messages/[i:id]', function ($id) use ($pdo, $twig) {
+    AuthMiddleware::authSession();
+    $messageController = new MessageController($pdo, $twig);
+    $messageController->show($id);
+});
+
+$router->map('GET', '/messages/[i:id]/', function ($id) use ($pdo, $twig) {
     AuthMiddleware::authSession();
     $messageController = new MessageController($pdo, $twig);
     $messageController->show($id);

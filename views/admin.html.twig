@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administration des utilisateurs - CookBook</title>
-    <link rel="stylesheet" href="/public/css/style.css?v=6">
-    <link rel="icon" href="/public/assets/flaticon.png" type="image/png">
+    <link rel="stylesheet" href="{{ basePath }}/public/css/style.css?v=6">
+    <link rel="icon" href="{{ basePath }}/public/assets/flaticon.png" type="image/png">
 </head>
 <body>
 <button type="button" class="nav-back-button" data-nav-back aria-label="Retour" title="Retour">←</button>
@@ -24,20 +24,20 @@
 </script>
 <header>
     <div>
-        <strong><a class="site-brand-link" href="/" style="color: inherit; text-decoration: none;">CookBook - Admin</a></strong>
+        <strong><a class="site-brand-link" href="{{ basePath }}/" style="color: inherit; text-decoration: none;">CookBook - Admin</a></strong>
     </div>
     <nav>
-        <a href="/">Accueil</a>
-        <a href="/messages">
+        <a href="{{ basePath }}/">Accueil</a>
+        <a href="{{ basePath }}/messages">
             Messages
             {% if unreadMessagesCount > 0 %}
                 <span class="badge" style="background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.8rem; vertical-align: top;">{{ unreadMessagesCount|escape }}</span>
             {% endif %}
         </a>
         {% if isAdmin %}
-            <a href="/admin">Administration</a>
+            <a href="{{ basePath }}/admin">Administration</a>
         {% endif %}
-        <a href="/logout">Déconnexion</a>
+        <a href="{{ basePath }}/logout">Déconnexion</a>
         {% if currentUser %}
             <span class="user-badge">{{ currentUser|escape }}</span>
         {% endif %}
@@ -59,7 +59,7 @@
             <li>Recettes totales : {{ recipeCount }}</li>
         </ul>
         <p>
-            <a href="/admin/recipes">Voir toutes les recettes</a>
+            <a href="{{ basePath }}/admin/recipes">Voir toutes les recettes</a>
         </p>
     </section>
 
@@ -86,9 +86,9 @@
                     <td>{{ user.active is defined and user.active == 1 ? 'Oui' : 'Non' }}</td>
                     <td>{{ user.created_at|date('d/m/Y H:i') }}</td>
                     <td class="actions">
-                        <a href="/admin/users/{{ user.id }}/edit">Modifier</a>
+                        <a href="{{ basePath }}/admin/users/{{ user.id }}/edit">Modifier</a>
                         <form method="post"
-                              action="/admin/users/{{ user.id }}/delete"
+                              action="{{ basePath }}/admin/users/{{ user.id }}/delete"
                               style="display:inline"
                               onsubmit="return confirm('Supprimer cet utilisateur ?');">
                             <button type="submit" class="btn-link">Supprimer</button>
@@ -109,7 +109,7 @@
             <span>© {{ "now"|date("Y") }} CookBook. Tous droits réservés.</span>
         </div>
         <nav class="site-footer__nav" aria-label="Pied de page">
-            <a href="/mentions-legales">Mentions légales</a>
+            <a href="{{ basePath }}/mentions-legales">Mentions légales</a>
         </nav>
     </div>
 </footer>

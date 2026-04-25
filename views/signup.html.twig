@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription - CookBook</title>
-    <link rel="stylesheet" href="/public/css/style.css?v=6">
-    <link rel="icon" href="/public/assets/flaticon.png" type="image/png">
+    <link rel="stylesheet" href="{{ basePath }}/public/css/style.css?v=6">
+    <link rel="icon" href="{{ basePath }}/public/assets/flaticon.png" type="image/png">
 </head>
 <body>
 <button type="button" class="nav-back-button" data-nav-back aria-label="Retour" title="Retour">←</button>
@@ -31,7 +31,7 @@
             <div class="error" style="color: red; margin-bottom: 1rem;">{{ error|escape }}</div>
         {% endif %}
 
-        <form method="POST" action="/signup">
+        <form method="POST" action="{{ basePath }}/signup">
             <div>
                 <label for="username">Nom d'utilisateur</label>
                 <input placeholder="Votre pseudo" type="text" id="username" name="username" value="{{ old_username|default('')|escape }}" required />
@@ -51,7 +51,7 @@
                 <button type="submit">S'inscrire</button>
                 <p class="auth-link">
                     Vous avez déjà un compte ?
-                    <a href="/signin">Connectez-vous</a>
+                    <a href="{{ basePath }}/signin">Connectez-vous</a>
                 </p>
             </div>
         </form>
@@ -64,7 +64,7 @@
             <span>© {{ "now"|date("Y") }} CookBook. Tous droits réservés.</span>
         </div>
         <nav class="site-footer__nav" aria-label="Pied de page">
-            <a href="/mentions-legales">Mentions légales</a>
+            <a href="{{ basePath }}/mentions-legales">Mentions légales</a>
         </nav>
     </div>
 </footer>

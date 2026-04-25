@@ -4,9 +4,17 @@ RewriteRule ^assets/flaticon\.svg$ assets/flaticon.png [R=302,L,NC]
 RewriteCond %{REQUEST_METHOD} =POST
 RewriteRule ^CookBook/(.*)$ /$1 [QSA,L,NC]
 RewriteCond %{REQUEST_METHOD} !=POST
+RewriteRule ^messages(/.*)?$ index.php [L]
+
 RewriteRule ^CookBook/?$ / [QSA,R=301,L,NC]
+RewriteCond %{HTTP_HOST} ^(www\.)?cookbook\.fm-tech\.fr$ [NC]
 RewriteCond %{REQUEST_METHOD} !=POST
 RewriteRule ^CookBook/(.*)$ /$1 [QSA,R=301,L,NC]
+RewriteCond %{HTTP_HOST} ^(www\.)?cookbook\.fm-tech\.fr$ [NC]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{HTTP_HOST} ^(www\.)?cookbook\.fm-tech\.fr$ [NC]
+RewriteRule ^ index.php [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.php [L]

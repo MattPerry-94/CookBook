@@ -29,7 +29,8 @@ final class AdminController extends Controller{
     private function ensureAdmin(): void
     {
         if (empty($_SESSION['id_user'])) {
-            header('Location: https://cookbook.fm-tech.fr/signin');
+            $basePath = defined('APP_BASE_PATH') ? APP_BASE_PATH : '';
+            header('Location: ' . $basePath . '/signin');
             if (PHP_SAPI !== 'cli') {
                 exit;
             }
@@ -39,7 +40,8 @@ final class AdminController extends Controller{
         $current   = $userModel->findById((int) $_SESSION['id_user']);
 
         if (!$current || $current['role'] !== 'admin') {
-            header('Location: https://cookbook.fm-tech.fr/');
+            $basePath = defined('APP_BASE_PATH') ? APP_BASE_PATH : '';
+            header('Location: ' . $basePath . '/');
             if (PHP_SAPI !== 'cli') {
                 exit;
             }
@@ -105,7 +107,8 @@ final class AdminController extends Controller{
         $user      = $userModel->findById($id);
 
         if (!$user) {
-            header('Location: https://cookbook.fm-tech.fr/admin');
+            $basePath = defined('APP_BASE_PATH') ? APP_BASE_PATH : '';
+            header('Location: ' . $basePath . '/admin');
             if (PHP_SAPI !== 'cli') {
                 exit;
             }
@@ -130,7 +133,8 @@ final class AdminController extends Controller{
         $user      = $userModel->findById($id);
 
         if (!$user) {
-            header('Location: https://cookbook.fm-tech.fr/admin');
+            $basePath = defined('APP_BASE_PATH') ? APP_BASE_PATH : '';
+            header('Location: ' . $basePath . '/admin');
             if (PHP_SAPI !== 'cli') {
                 exit;
             }
@@ -151,7 +155,8 @@ final class AdminController extends Controller{
         }
 
         $userModel->updateUser($id, $email, $name !== '' ? $name : null, $role, $active);
-        header('Location: https://cookbook.fm-tech.fr/admin');
+        $basePath = defined('APP_BASE_PATH') ? APP_BASE_PATH : '';
+        header('Location: ' . $basePath . '/admin');
         if (PHP_SAPI !== 'cli') {
             exit;
         }
@@ -170,7 +175,8 @@ final class AdminController extends Controller{
 
         // On évite de supprimer son propre compte admin
         if ($id === (int) $_SESSION['id_user']) {
-            header('Location: https://cookbook.fm-tech.fr/admin');
+            $basePath = defined('APP_BASE_PATH') ? APP_BASE_PATH : '';
+            header('Location: ' . $basePath . '/admin');
             if (PHP_SAPI !== 'cli') {
                 exit;
             }
@@ -178,7 +184,8 @@ final class AdminController extends Controller{
         }
 
         $userModel->deleteById($id);
-        header('Location: https://cookbook.fm-tech.fr/admin');
+        $basePath = defined('APP_BASE_PATH') ? APP_BASE_PATH : '';
+        header('Location: ' . $basePath . '/admin');
         if (PHP_SAPI !== 'cli') {
             exit;
         }
@@ -211,7 +218,8 @@ final class AdminController extends Controller{
         $this->ensureAdmin();
         $recipeModel = new RecipeModel($this->pdo);
         $recipeModel->deleteById($id);
-        header('Location: https://cookbook.fm-tech.fr/admin/recipes');
+        $basePath = defined('APP_BASE_PATH') ? APP_BASE_PATH : '';
+        header('Location: ' . $basePath . '/admin/recipes');
         if (PHP_SAPI !== 'cli') {
             exit;
         }
@@ -235,7 +243,8 @@ final class AdminController extends Controller{
         if (!empty($_SERVER['HTTP_REFERER'])) {
             header('Location: ' . $_SERVER['HTTP_REFERER']);
         } else {
-            header('Location: https://cookbook.fm-tech.fr/');
+            $basePath = defined('APP_BASE_PATH') ? APP_BASE_PATH : '';
+            header('Location: ' . $basePath . '/');
             if (PHP_SAPI !== 'cli') {
                 exit;
             }

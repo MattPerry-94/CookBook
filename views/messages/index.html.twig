@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mes Messages - CookBook</title>
-    <link rel="stylesheet" href="/public/css/style.css?v=6">
-    <link rel="icon" href="/public/assets/flaticon.png" type="image/png">
+    <link rel="stylesheet" href="{{ basePath }}/public/css/style.css?v=6">
+    <link rel="icon" href="{{ basePath }}/public/assets/flaticon.png" type="image/png">
 </head>
 <body>
 <button type="button" class="nav-back-button" data-nav-back aria-label="Retour" title="Retour">←</button>
@@ -24,26 +24,26 @@
 </script>
 <header>
     <div>
-        <strong><a class="site-brand-link" href="/" style="color: inherit; text-decoration: none;">CookBook</a></strong>
+        <strong><a class="site-brand-link" href="{{ basePath }}/" style="color: inherit; text-decoration: none;">CookBook</a></strong>
     </div>
     <nav>
-        <a href="/">Accueil</a>
+        <a href="{{ basePath }}/">Accueil</a>
         {% if currentUser %}
-            <a href="/my-recipes">Mes recettes</a>
-            <a href="/messages" class="active">
+            <a href="{{ basePath }}/my-recipes">Mes recettes</a>
+            <a href="{{ basePath }}/messages" class="active">
                 Messages
                 {% if unreadMessagesCount > 0 %}
                     <span class="badge" style="background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.8rem; vertical-align: top;">{{ unreadMessagesCount|escape }}</span>
                 {% endif %}
             </a>
-            <a href="/recipes/create">Créer une recette</a>
+            <a href="{{ basePath }}/recipes/create">Créer une recette</a>
             {% if isAdmin %}
-                <a href="/admin">Administration</a>
+                <a href="{{ basePath }}/admin">Administration</a>
             {% endif %}
-            <a href="/logout">Déconnexion</a>
+            <a href="{{ basePath }}/logout">Déconnexion</a>
             <span class="user-badge">{{ currentUser|escape }}</span>
         {% else %}
-            <a href="/signin">Connexion</a>
+            <a href="{{ basePath }}/signin">Connexion</a>
         {% endif %}
     </nav>
 </header>
@@ -51,14 +51,14 @@
 <main class="messages-page">
     <div class="top-actions" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
         <h1>Mes conversations</h1>
-        <a href="/messages/new" style="background: #ff7043; color: white; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none;">+ Nouveau message</a>
+        <a href="{{ basePath }}/messages/new" style="background: #ff7043; color: white; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none;">+ Nouveau message</a>
     </div>
 
     {% if conversations is defined and conversations|length > 0 %}
         <div class="conversations-list">
             {% for conv in conversations %}
                 <div style="position: relative;">
-                    <a href="/messages/{{ conv.contact_id }}" class="card conversation-item" style="text-decoration: none; color: inherit; display: block; padding: 1rem; margin-bottom: 1rem;">
+                    <a href="{{ basePath }}/messages/{{ conv.contact_id }}" class="card conversation-item" style="text-decoration: none; color: inherit; display: block; padding: 1rem; margin-bottom: 1rem;">
                         <div style="display: flex; justify-content: space-between; align-items: center; padding-right: 40px;">
                             <h3 style="margin: 0;">{{ conv.contact_name|default(conv.contact_email)|escape }}</h3>
                             <small style="color: #666;">{{ conv.created_at|date('d/m/Y H:i') }}</small>
@@ -70,7 +70,7 @@
                             {{ conv.content|escape }}
                         </p>
                     </a>
-                    <form action="/messages/{{ conv.contact_id }}/delete" method="post" onsubmit="return confirm('Supprimer cette conversation ?');" style="position: absolute; top: 1rem; right: 1rem;">
+                    <form action="{{ basePath }}/messages/{{ conv.contact_id }}/delete" method="post" onsubmit="return confirm('Supprimer cette conversation ?');" style="position: absolute; top: 1rem; right: 1rem;">
                         <button type="submit" style="background: #ff6b6b; color: white; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-weight: bold; line-height: 1;">×</button>
                     </form>
                 </div>
@@ -87,7 +87,7 @@
             <span>© {{ "now"|date("Y") }} CookBook. Tous droits réservés.</span>
         </div>
         <nav class="site-footer__nav" aria-label="Pied de page">
-            <a href="/mentions-legales">Mentions légales</a>
+            <a href="{{ basePath }}/mentions-legales">Mentions légales</a>
         </nav>
     </div>
 </footer>
